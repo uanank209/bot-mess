@@ -1,168 +1,102 @@
-const fs = require("fs");
-const request = require("request");
-const cooldownTime = 86400; // Thời gian làm tiếp là 86400 giây (24 giờ)
-
+const fs = require("fs-extra");
 module.exports.config = {
     name: "cave",
-    version: "1.0.1",
+    version: "1.0.2",
     hasPermssion: 0,
-    credits: "",
-    description: "Làm cave kiếm tiền",
-    commandCategory: "Kiếm Tiền",
+    credits: "⚡D-Jukie", 
+    description: "Làm việc để có tiền, có làm thì mới có ăn",
+    commandCategory: "Kiếm tiền",
     cooldowns: 5,
     envConfig: {
-        cooldownTime: cooldownTime // Đặt cooldownTime trong envConfig
-    },
-    dependencies: {
-        "fs": "",
-        "request": ""
+        cooldownTime: 1000000
     }
 };
-
 module.exports.onLoad = () => {
-    const fs = require("fs-extra");
+    const request = require("request");
     const dirMaterial = __dirname + `/cache/`;
     if (!fs.existsSync(dirMaterial + "cache")) fs.mkdirSync(dirMaterial, { recursive: true });
-};
-
-module.exports.handleReply = async ({ event: e, api, handleReply, Currencies }) => {
-    const { threadID, messageID, senderID } = e;
-    let data = (await Currencies.getData(senderID)).data || {};
-    if (handleReply.author != e.senderID) 
-        return api.sendMessage("Nó làm cave có phải mày đâu mà rep", e.threadID, e.messageID);
-    var randomAmount = Math.random();
-    var a;
-    switch (e.body) {
-        case "1":
-            if (randomAmount < 0.4) {
-                a = Math.floor(Math.random() * (400000 - 200000 + 1)) + 200000;
-                var msg = `🇻🇳 Bạn vừa làm gái ngành ở Việt Nam và được ${a} VND`;
-            } else if (randomAmount < 0.7) {
-                a = Math.floor(Math.random() * (600000 - 400000 + 1)) + 400000;
-                var msg = `🇻🇳 Bạn vừa làm phò ở Việt Nam và được ${a} VND`;
-            } else if (randomAmount < 0.9) {
-                a = Math.floor(Math.random() * (800000 - 600000 + 1)) + 600000;
-                var msg = `🇻🇳 Bạn vừa làm gái bán hoa ở Việt Nam và được ${a} VND`;
-            } else {
-                a = Math.floor(Math.random() * (1000000 - 800000 + 1)) + 800000;
-                var msg = `🇻🇳 Bạn vừa làm gái đứng đường ở Việt Nam và được ${a} VND`;
-            }
-            break;
-        case "2":
-            if (randomAmount < 0.4) {
-                a = Math.floor(Math.random() * (400000 - 200000 + 1)) + 200000;
-                var msg = `🇨🇳 Bạn vừa làm gái ngành ở Trung Quốc và được ${a} VND`;
-            } else if (randomAmount < 0.7) {
-                a = Math.floor(Math.random() * (600000 - 400000 + 1)) + 400000;
-                var msg = `🇨🇳 Bạn vừa làm phò ở Trung Quốc và được ${a} VND`;
-            } else if (randomAmount < 0.9) {
-                a = Math.floor(Math.random() * (800000 - 600000 + 1)) + 600000;
-                var msg = `🇨🇳 Bạn vừa làm gái bán hoa ở Trung Quốc và được ${a} VND`;
-            } else {
-                a = Math.floor(Math.random() * (1000000 - 800000 + 1)) + 800000;
-                var msg = `🇨🇳 Bạn vừa làm gái đứng đường ở Trung Quốc và được ${a} VND`;
-            }
-            break;
-        case "3":
-            if (randomAmount < 0.4) {
-                a = Math.floor(Math.random() * (400000 - 200000 + 1)) + 200000;
-                var msg = `🇯🇵 Bạn vừa làm gái ngành ở Nhật Bản và được ${a} VND`;
-            } else if (randomAmount < 0.7) {
-                a = Math.floor(Math.random() * (600000 - 400000 + 1)) + 400000;
-                var msg = `🇯🇵 Bạn vừa làm phò ở Nhật Bản và được ${a} VND`;
-            } else if (randomAmount < 0.9) {
-                a = Math.floor(Math.random() * (800000 - 600000 + 1)) + 600000;
-                var msg = `🇯🇵 Bạn vừa làm gái bán hoa ở Nhật Bản và được ${a} VND`;
-            } else {
-                a = Math.floor(Math.random() * (1000000 - 800000 + 1)) + 800000;
-                var msg = `🇯🇵 Bạn vừa làm gái đứng đường ở Nhật Bản và được ${a} VND`;
-            }
-            break;
-        case "4":
-            if (randomAmount < 0.4) {
-                a = Math.floor(Math.random() * (400000 - 200000 + 1)) + 200000;
-                var msg = `🇹🇭 Bạn vừa làm gái ngành ở Thái Lan và được ${a} VND`;
-            } else if (randomAmount < 0.7) {
-                a = Math.floor(Math.random() * (600000 - 400000 + 1)) + 400000;
-                var msg = `🇹🇭 Bạn vừa làm phò ở Thái Lan và được ${a} VND`;
-            } else if (randomAmount < 0.9) {
-                a = Math.floor(Math.random() * (800000 - 600000 + 1)) + 600000;
-                var msg = `🇹🇭 Bạn vừa làm gái bán hoa ở Thái Lan và được ${a} VND`;
-            } else {
-                a = Math.floor(Math.random() * (1000000 - 800000 + 1)) + 800000;
-                var msg = `🇹🇭 Bạn vừa làm gái đứng đường ở Thái Lan và được ${a} VND`;
-            }
-            break;
-        case "5":
-            if (randomAmount < 0.4) {
-                a = Math.floor(Math.random() * (400000 - 200000 + 1)) + 200000;
-                var msg = `🇺🇸 Bạn vừa làm gái ngành ở Mỹ và được ${a} VND`;
-            } else if (randomAmount < 0.7) {
-                a = Math.floor(Math.random() * (600000 - 400000 + 1)) + 400000;
-                var msg = `🇺🇸 Bạn vừa làm phò ở Mỹ và được ${a} VND`;
-            } else if (randomAmount < 0.9) {
-                a = Math.floor(Math.random() * (800000 - 600000 + 1)) + 600000;
-                var msg = `🇺🇸 Bạn vừa làm gái bán hoa ở Mỹ và được ${a} VND`;
-            } else {
-                a = Math.floor(Math.random() * (1000000 - 800000 + 1)) + 800000;
-                var msg = `🇺🇸 Bạn vừa làm gái đứng đường ở Mỹ và được ${a} VND`;
-            }
-            break;
-        case "6":
-            if (randomAmount < 0.4) {
-                a = Math.floor(Math.random() * (400000 - 200000 + 1)) + 200000;
-                var msg = `🇰🇭 Bạn vừa làm gái ngành ở Campuchia và được ${a} VND`;
-            } else if (randomAmount < 0.7) {
-                a = Math.floor(Math.random() * (600000 - 400000 + 1)) + 400000;
-                var msg = `🇰🇭 Bạn vừa làm phò ở Campuchia và được ${a} VND`;
-            } else if (randomAmount < 0.9) {
-                a = Math.floor(Math.random() * (800000 - 600000 + 1)) + 600000;
-                var msg = `🇰🇭 Bạn vừa làm gái bán hoa ở Campuchia và được ${a} VND`;
-            } else {
-                a = Math.floor(Math.random() * (1000000 - 800000 + 1)) + 800000;
-                var msg = `🇰🇭 Bạn vừa làm gái đứng đường ở Campuchia và được ${a} VND`;
-            }
-            break;
-        default:
-            return api.sendMessage("Reply từ 1 -> 6 để chọn Quốc Gia", e.threadID, e.messageID);
+    if (!fs.existsSync(dirMaterial + "work.jpeg")) request("https://i.imgur.com/pPw9hY9.jpeg").pipe(fs.createWriteStream(dirMaterial + "work.jpeg"));
+}
+module.exports.languages = {
+    "vi": {
+        "cooldown": "⚡️Bạn vừa làm 1 công việc xong để tránh mệt, hãy quay lại sau: %1 phút %2 giây nữa"      
+    },
+    "en": {
+        "cooldown": "⚡️You're done, come back later: %1 minute(s) %2 second(s)."
     }
-    await Currencies.increaseMoney(e.senderID, parseInt(a));
-
-    api.unsendMessage(handleReply.messageID);
-    return api.sendMessage(`${msg}`, threadID, async () => {
-        data.work2Time = Date.now();
-        await Currencies.setData(senderID, { data });
-    });
-};
-module.exports.run = async ({ event: e, api, handleReply, Currencies }) => {
-    const { threadID, messageID, senderID } = e;
+}
+module.exports.handleReply = async ({ event, api, handleReply, Currencies, getText }) => {
+    const { threadID, messageID, senderID } = event;
     let data = (await Currencies.getData(senderID)).data || {};
+var coinsdd1 = Math.floor(Math.random() * 500) + 10000; //random coins khi đào đá
 
-    if (typeof data !== "undefined" && cooldownTime - ((Date.now() - data.work2Time) / 1000) > 0) {
-        var time = cooldownTime - ((Date.now() - data.work2Time) / 1000),
-            seconds = Math.floor((time % 60)),
-            minutes = Math.floor((time / 60) % 60),
-            hours = Math.floor((time / (60 * 60)) % 24);
-        return api.sendMessage(`💫 Lồn thì thâm như cái dái chó rồi còn địt nhiều vậy, chờ ${hours} giờ ${minutes} phút ${seconds} giây nữa để làm tiếp nhé. Còn không muốn chờ thì liên hệ Admin để làm trực tiếp nhé :))`, e.threadID, e.messageID);
-    } else {
-        var msg = {
-            body: "====== CAVE ======" + `\n` +
-                "\n1. Việt Nam 🇻🇳" +
-                "\n2. Trung Quốc 🇨🇳" +
-                "\n3. Nhật Bản 🇯🇵" +
-                "\n4. Thái Lan 🇹🇭" +
-                "\n5. Mỹ 🇺🇸" +
-                "\n6. Campuchia 🇰🇭" +
-                `\n\n💬 Rep tin nhắn này để chọn địa điểm làm cave`
-        };
-        return api.sendMessage(msg, e.threadID, (error, info) => {
+//random công việc cần làm
+var rddd1 = ['khách vip', 'khách quen', 'người lạ', 'thằng ngu tầm 23 tuổi', 'anh lạ mặt', 'khách quen', 'đại gia 92 tuổi', 'thằng nhóc 12 tuổi']; //random công việc khi đào đá
+var work6 = rddd1[Math.floor(Math.random() * rddd1.length)];
+
+
+var msg = "";
+    switch(handleReply.type) {
+        case "choosee": {
+            
+            switch(event.body) {
+                case "1": msg = `⚡️Bạn được ${work6} cho ${coinsdd1}$ nếu xxx 1 đêm, thế là bạn đồng ý ngay :)))` ; Currencies.increaseMoney(event.senderID, coinsdd1); break;             
+                case "2": msg = `⚡️Bạn được ${work6} cho ${coinsdd1}$ nếu xxx 1 đêm, thế là bạn đồng ý ngay :)))`; Currencies.increaseMoney(event.senderID, coinsdd1); break;
+                case "3": msg = `⚡️Bạn được ${work6} cho ${coinsdd1}$ nếu xxx 1 đêm, thế là bạn đồng ý ngay :)))`; Currencies.increaseMoney(event.senderID, coinsdd1); break;
+                case "4": msg = `⚡️Bạn được ${work6} cho ${coinsdd1}$ nếu xxx 1 đêm, thế là bạn đồng ý ngay :)))`; Currencies.increaseMoney(event.senderID, coinsdd1); break;
+                case "5": msg = `⚡️Bạn được ${work6} cho ${coinsdd1}$ nếu xxx 1 đêm, thế là bạn đồng ý ngay :)))` ; Currencies.increaseMoney(event.senderID, coinsdd1); break;
+                case "6": msg = `⚡️Bạn được ${work6} cho ${coinsdd1}$ nếu xxx 1 đêm, thế là bạn đồng ý ngay :)))`; Currencies.increaseMoney(event.senderID, coinsdd1); break;
+                case "7": msg = `⚡️Bạn vừa được fan chân chính donate cho 400 củ, rồi bạn nuốt luôn =))`; Currencies.increaseMoney(event.senderID, coinsdd1); break;
+                case "8": msg = "⚡️Chưa update..."; break; //thêm case nếu muốn 
+                default: break;
+            };
+            const choose = parseInt(event.body);
+            if (isNaN(event.body)) return api.sendMessage("⚡️Vui lòng nhập 1 con số", event.threadID, event.messageID);
+            if (choose > 7 || choose < 1) return api.sendMessage("⚡️Lựa chọn không nằm trong danh sách.", event.threadID, event.messageID); //thay số case vào số 7
+            api.unsendMessage(handleReply.messageID);
+            if (msg == "⚡️Chưa update...") {
+                msg = "⚡️Update soon...";
+            };
+            return api.sendMessage(`${msg}`, threadID, async () => {
             data.work2Time = Date.now();
-            global.client.handleReply.push({
-                type: "choosee",
-                name: this.config.name,
-                author: e.senderID,
-                messageID: info.messageID
-            });
+            await Currencies.setData(senderID, { data });
+            
         });
+
+    };
+}
+}
+module.exports.run = async ({  event, api, handleReply, Currencies, getText }) => {
+    const { threadID, messageID, senderID } = event;
+    const cooldown = global.configModule[this.config.name].cooldownTime;
+    let data = (await Currencies.getData(senderID)).data || {};
+    //cooldownTime cho mỗi lần nhận 
+    if (typeof data !== "undefined" && cooldown - (Date.now() - data.work2Time) > 0) {
+
+        var time = cooldown - (Date.now() - data.work2Time),
+            minutes = Math.floor(time / 600000),
+            seconds = ((time % 600000) / 10000).toFixed(0); 
+        return api.sendMessage(getText("cooldown", minutes, (seconds < 10 ? "0" + seconds : seconds)), event.threadID, event.messageID);
     }
-};
+    else {    
+    return api.sendMessage({body:
+        "🏮===𝐏𝐇𝐎̂́ 𝐇𝐎𝐀 𝐊𝐈𝐄̂̀𝐔===🏮" +
+        "\n\n𝟏. 𝐏𝐡𝐨̂́ 𝐓𝐫𝐚̂̀𝐧 𝐃𝐮𝐲 𝐇𝐮̛𝐧𝐠 🎀" +
+        "\n𝟐. 𝐂𝐚̂̀𝐮 𝐓𝐡𝐢̣ 𝐍𝐠𝐡𝐞̀ 💦" +
+        "\n𝟑. 𝐇𝐨̂̀ 𝐇𝐨𝐚̀𝐧 𝐊𝐢𝐞̂́𝐦 🍄" +
+        "\n𝟒. 𝐓𝐢̣𝐧𝐡 𝐓𝐡𝐚̂́𝐭 𝐁𝐨̂̀𝐧𝐠 𝐋𝐚𝐢" +
+        "\n𝟓. 𝐏𝐡𝐨̂́ 𝐓𝐚𝐦 𝐓𝐫𝐢𝐧𝐡 🐥" +
+        "\n𝟔. 𝐊𝐡𝐚́𝐜𝐡 𝐒𝐚̣𝐧 𝐘 𝐍𝐮 💈" +
+        "\n7. Streamer Nổi Niếng 🖥️" +
+        "\n\n𝐇𝐚̃𝐲 𝐑𝐞𝐩𝐥𝐚𝐲 𝐒𝐓𝐓 𝐂𝐡𝐨̣𝐧 𝐊𝐡𝐮 𝐕𝐮̛̣𝐜 𝐇𝐚̀𝐧𝐡 𝐍𝐠𝐡𝐞̂̀ ❤️"
+        ,attachment: fs.createReadStream(__dirname + `/cache/work.jpeg`)}, event.threadID, (error, info) => {
+                data.work2Time = Date.now();
+        global.client.handleReply.push({
+            type: "choosee",
+            name: this.config.name,
+            author: event.senderID,
+            messageID: info.messageID
+          })  
+        })
+    }
+}

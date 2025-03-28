@@ -1,11 +1,10 @@
-const activeThreads = new Set();
 module.exports.config = {
     name: "chuidenchet",
     version: "1.0.0",
-    hasPermssion: 2,
-    credits: "",
-    description: "chuidenchet người bạn tag (ngôn của mấy đứa war)",
-    commandCategory: "War",
+    hasPermssion: 1,
+    credits: "fix by Dyy (B.A.D)",
+    description: "Tag liên tục để chửi đứa mà bạn ghét (lưu ý sau khi dùng xong lệnh này rất có thể acc bạn sẽ bị mõm, nếu bạn hên thì acc còn, còn nếu bạn đen thì pay acc :>)",
+    commandCategory: "group",
     usages: "chuidenchet @mention",
     cooldowns: 10,
     dependencies: {
@@ -14,348 +13,313 @@ module.exports.config = {
     }
 }
 
-module.exports.run = async function({ api, args, Users, event }) {
-    if (args.length > 0 && args[0] === "stop") {
-        if (activeThreads.has(event.threadID)) {
-            activeThreads.delete(event.threadID);
-            return api.sendMessage("Đã dừng hoạt động của lệnh chuidenchet.", event.threadID);
-        } else {
-            return api.sendMessage("Lệnh chuidenchet không hoạt động trong nhóm này.", event.threadID);
-        }
-    }
-    const mention = Object.keys(event.mentions)[0];
-    if (!mention) return api.sendMessage("Cần phải tag 1 người bạn muốn chửi vào mặt nó", event.threadID);
-    const name = event.mentions[mention];
-    const arraytag = [{ id: mention, tag: name }];
-    activeThreads.add(event.threadID);
+module.exports.run = async function({ api, args, Users, event}) {
+    var mention = Object.keys(event.mentions)[0];
+    if(!mention) return api.sendMessage("Cần phải tag 1 người bạn muốn chửi", event.threadID);
+ let name =  event.mentions[mention];
+    var arraytag = [];
+        arraytag.push({id: mention, tag: name});
+    var a = function (a) { api.sendMessage(a, event.threadID); }
+a("Xem Tao Chửi Cho Nghe Này!!");
+setTimeout(() => {a({body: "Đ!t con mẹ mày" + " " + name, mentions: arraytag})}, 3000);
 
-    const messages = [
-        "Xem Tao Chui Cho Nghe Nay!!",
-        "D!t con me may",
-        "May ra day tao bao",
-        "Hien hon nhanh con cho",
-        "Hien hon bo may hoi toi",
-        "May tron khi nao moi hien hon day",
-        "D!t cu may nua hien hon",
-        "Hien hon nhanh khong tao dot nha may gio",
-        "Nhanh ra chui nhau voi tao",
-        "Tao nem trung thoi do dau do xang vao nha may gio",
-        "Con cac dit me may",
-        "Deo ra nua bo may dot nha may",
-        "Bo may ban rap chet cu may gio",
-        "May van deo dam ra a",
-        "Vay thi xin moi nghe tao rap dit chet ca lo may nha con",
-        "Truoc do cho tao xin nghi 1p nhe",
-        "Xin phep mo dau thi",
-        "Dau tien tao xin phep dit tu tren xuong duoi con",
-        "Tao dit tu lo lon den lo nhi con lon",
-        "Lon thi to nhu lon trau thu dam ong cong ay nhe con",
-        "Tao dit chac 2 thang nhu tao chua du lap cai lo lon nha may dau",
-        "D!t con me may",
-        "May ra day tao baoHien hon nhanh con cho",
-        "Hien hon nhanh con cho",
-        "Hien hon bo may hoi toi",
-        "May tron khi nao moi hien hon day",
-        "D!t cu may nua hien hon",
-        "Hien hon nhanh khong tao dot nha may gio",
-        "Dit me may bo noi tu te ma deo day a",
-        "Nhanh ra chui nhau voi tao",
-        "Con me may ra day di thang lon",
-        "Hien hon di thang mat lon",
-        "Di me may ra day bo xem nao",
-        "Tao nem trung thoi do dau do xang vao nha may gio",
-        "Dit me bo goi deo nghe a",
-        "Hien ra bo may xem nao",
-        "Con cac dit me may",
-        "Bo may ban rap chet cu may gio",
-        "Vay thi xin moi nghe tao rap dit chet ca lo may nha con",
-        "Dau tien tao xin phep dit tu tren xuong duoi con",
-        "Tao dit tu lo lon den lo nhi con lon",
-        "Lon thi to nhu lon trau thu dam ong cong ay nhe con",
-        "Tao dit chac 2 thang nhu tao chua du lap cai lo lon nha may dau",
-        "Du con di me may",
-        "thang oc cuc",
-        "me m de m ra dau lon chu duoc con cac gi",
-        "tinh trung khuyet tat",
-        "hoi do ba may deo dung bao nen loi ra thang mat cac nhu may do",
-        "du di me may",
-        "dit con me may",
-        "Dit me bo goi deo nghe a",
-        "Hoa ra cung chi la con cho mang hinh dang nguoi",
-        " Song o doi ma cu nhu He trong rap xiec : ))",
-        "May dung so sanh bon tao voi no",
-        "vi no la cho con tao la nguoi",
-        "May dung bat cuoi khi nghe dieu do",
-        "vi ca may va no deu cho nhu nhau",
-        "Xa hoi doi mau",
-        "Lam nguoi thi kho, lam cho thi de ..!!",
-        "Song phai biet nghi",
-        "Cuoc song phuc tap, xa hoi bon chen !!",
-        " Song ngheo, song kho chu dung song CHO nha con",
-        "Cu soi guong nhieu vao",
-        "Song - La phai biet dieu",
-        " Dung to ve mau lieu nhieu hon mau nao",
-        "Thich noi va choi troi tao se cho may len ngoi....",
-        "Du ban ma sac may thich thi cu len mam tren ma ngoi!!!",
-        "Co dieu may len nho rang.....",
-        "Giua cho voi nguoi se chang bao gio co su cong bang.,",
-        "Du co co the hien hay la dang nguy bien thi an tuong may chi la 1 tieng ang !!",
-        "DIT CON ME!!!",
-        "Dop loi bon tao nhu 1 con cho!!!",
-        "Con deo nao cung nhu con nao!!!",
-        "Hai!!!",
-        "Du ma nao cac a",
-        "Lich su thi khong co - Chi co cai mau choi cho thi khong ai sanh bang",
-        "thang nao lon",
-        "thang mat cac",
-        "thang nao lon",
-        "thang mat cac",
-        "thang nao lon",
-        "thang mat cac",
-        "thang nao lon",
-        "thang mat cac",
-        "thang nao lon",
-        "thang mat cac",
-        "thang nao lon",
-        "Cai lon",
-        "Di me may ra day bo xem nao",
-        "Di me may ra day doc cho het",
-        "Du con di me may",
-        "thang oc cuc",
-        "me m de m ra dau lon chu duoc con cac gi",
-        "tinh trung khuyet tat",
-        "hoi do ba may deo dung bao nen loi ra thang mat cac nhu may do",
-        "du di me may",
-        "dit con me may",
-        "Dit me bo goi deo nghe a",
-        "Dit me m ra doc ne",
-        "di lon",
-        "DIT MEEEEEEEEEE MAY!!!",
-        "D!t con me may",
-        "May ra day tao bao",
-        "Hien hon nhanh con cho",
-        "Hien hon bo may hoi toi",
-        "May tron khi nao moi hien hon day",
-        "D!t cu may nua hien hon",
-        "Hien hon nhanh khong tao dot nha may gio",
-        "Nhanh ra chui nhau voi tao",
-        "Tao nem trung thoi do dau do xang vao nha may gio",
-        "Con cac dit me may",
-        "Deo ra nua bo may dot nha may",
-        "Bo may ban rap chet cu may gio",
-        "May van deo dam ra a",
-        "Vay thi xin moi nghe tao rap dit chet ca lo may nha con",
-        "Tao dit tu lo lon den lo nhi con lon",
-        "Lon thi to nhu lon trau thu dam ong cong ay nhe con",
-        "Tao dit chac 2 thang nhu tao chua du lap cai lo lon nha may dau",
-        "D!t con me may",
-        "May ra day tao baoHien hon nhanh con cho",
-        "Hien hon nhanh con cho",
-        "Hien hon bo may hoi toi",
-        "May tron khi nao moi hien hon day",
-        "D!t cu may nua hien hon",
-        "Hien hon nhanh khong tao dot nha may gio",
-        "Dit me may bo noi tu te ma deo day a",
-        "Nhanh ra chui nhau voi tao",
-        "Con me may ra day di thang lon",
-        "Hien hon di thang mat lon",
-        "Di me may ra day bo xem nao",
-        "Tao nem trung thoi do dau do xang vao nha may gio",
-        "Dit me bo goi deo nghe a",
-        "Hien ra bo may xem nao",
-        "Con cac dit me may",
-        "Bo may ban rap chet cu may gio",
-        "Vay thi xin moi nghe tao rap dit chet ca lo may nha con",
-        "Dau tien tao xin phep dit tu tren xuong duoi con",
-        "Tao dit tu lo lon den lo nhi con lon",
-        "Lon thi to nhu lon trau thu dam ong cong ay nhe con",
-        "Tao dit chac 2 thang nhu tao chua du lap cai lo lon nha may dau",
-        "Du con di me may",
-        "thang oc cuc",
-        "me m de m ra dau lon chu duoc con cac gi",
-        "tinh trung khuyet tat",
-        "hoi do ba may deo dung bao nen loi ra thang mat cac nhu may do",
-        "du di me may",
-        "dit con me may",
-        "Dit me bo goi deo nghe a",
-        "Hoa ra cung chi la con cho mang hinh dang nguoi",
-        " Song o doi ma cu nhu He trong rap xiec : ))",
-        "May dung so sanh bon tao voi no",
-        "vi no la cho con tao la nguoi",
-        "May dung bat cuoi khi nghe dieu do",
-        "vi ca may va no deu cho nhu nhau",
-        "Xa hoi doi mau",
-        "Lam nguoi thi kho, lam cho thi de ..!!",
-        "Song phai biet nghi",
-        "Cuoc song phuc tap, xa hoi bon chen !!",
-        " Song ngheo, song kho chu dung song CHO nha con",
-        "Cu soi guong nhieu vao",
-        "Song - La phai biet dieu",
-        " Dung to ve mau lieu nhieu hon mau nao",
-        "Thich noi va choi troi tao se cho may len ngoi....",
-        "Du ban ma sac may thich thi cu len mam tren ma ngoi!!!",
-        "Co dieu may len nho rang.....",
-        "Giua cho voi nguoi se chang bao gio co su cong bang.,",
-        "Du co co the hien hay la dang nguy bien thi an tuong may chi la 1 tieng ang !!",
-        "DIT CON ME!!!",
-        "Dop loi bon tao nhu 1 con cho!!!",
-        "Con deo nao cung nhu con nao!!!",
-        "Hai!!!",
-        "Du ma nao cac a",
-        "Lich su thi khong co - Chi co cai mau choi cho thi khong ai sanh bang",
-        "thang nao lon",
-        "thang mat cac",
-        "thang nao lon",
-        "thang mat cac",
-        "thang nao lon",
-        "thang mat cac",
-        "thang nao lon",
-        "thang mat cac",
-        "thang nao lon",
-        "thang mat cac",
-        "thang nao lon",
-        "Cai lon",
-        "Di me may ra day bo xem nao",
-        "Di me may ra day doc cho het",
-        "Du con di me may",
-        "thang oc cuc",
-        "me m de m ra dau lon chu duoc con cac gi",
-        "tinh trung khuyet tat",
-        "hoi do ba may deo dung bao nen loi ra thang mat cac nhu may do",
-        "du di me may",
-        "dit con me may",
-        "Dit me bo goi deo nghe a",
-        "Dit me m ra doc ne",
-        "di lon",
-        "DIT MEEEEEEEEEE MAY!!!",
-        "D!t con me may",
-        "May ra day tao bao",
-        "Hien hon nhanh con cho",
-        "Hien hon bo may hoi toi",
-        "May tron khi nao moi hien hon day",
-        "D!t cu may nua hien hon",
-        "Hien hon nhanh khong tao dot nha may gio",
-        "Nhanh ra chui nhau voi tao",
-        "Tao nem trung thoi do dau do xang vao nha may gio",
-        "Deo ra nua bo may dot nha may",
-        "Bo may ban rap chet cu may gio",
-        "May van deo dam ra a",
-        "Vay thi xin moi nghe tao rap dit chet ca lo may nha con",
-        "Tao dit tu lo lon den lo nhi con lon",
-        "Lon thi to nhu lon trau thu dam ong cong ay nhe con",
-        "Tao dit chac 2 thang nhu tao chua du lap cai lo lon nha may dau",
-        "D!t con me may",
-        "May ra day tao baoHien hon nhanh con cho",
-        "Hien hon nhanh con cho",
-        "Hien hon bo may hoi toi",
-        "May tron khi nao moi hien hon day",
-        "D!t cu may nua hien hon",
-        "Hien hon nhanh khong tao dot nha may gio",
-        "Dit me may bo noi tu te ma deo day a",
-        "Nhanh ra chui nhau voi tao",
-        "Con me may ra day di thang lon",
-        "Hien hon di thang mat lon",
-        "Di me may ra day bo xem nao",
-        "Tao nem trung thoi do dau do xang vao nha may gio",
-        "Dit me bo goi deo nghe a",
-        "Hien ra bo may xem nao",
-        "Con cac dit me may",
-        "Bo may ban rap chet cu may gio",
-        "Vay thi xin moi nghe tao rap dit chet ca lo may nha con",
-        "Dau tien tao xin phep dit tu tren xuong duoi con",
-        "Tao dit tu lo lon den lo nhi con lon",
-        "Lon thi to nhu lon trau thu dam ong cong ay nhe con",
-        "Tao dit chac 2 thang nhu tao chua du lap cai lo lon nha may dau",
-        "Du con di me may",
-        "thang oc cuc",
-        "me m de m ra dau lon chu duoc con cac gi",
-        "tinh trung khuyet tat",
-        "hoi do ba may deo dung bao nen loi ra thang mat cac nhu may do",
-        "du di me may",
-        "dit con me may",
-        "Dit me bo goi deo nghe a",
-        "Hoa ra cung chi la con cho mang hinh dang nguoi",
-        " Song o doi ma cu nhu He trong rap xiec : ))",
-        "May dung so sanh bon tao voi no",
-        "vi no la cho con tao la nguoi",
-        "May dung bat cuoi khi nghe dieu do",
-        "vi ca may va no deu cho nhu nhau",
-        "Xa hoi doi mau",
-        "Lam nguoi thi kho, lam cho thi de ..!!",
-        "Song phai biet nghi",
-        "Cuoc song phuc tap, xa hoi bon chen !!",
-        " Song ngheo, song kho chu dung song CHO nha con",
-        "Cu soi guong nhieu vao",
-        "Song - La phai biet dieu",
-        " Dung to ve mau lieu nhieu hon mau nao",
-        "Thich noi va choi troi tao se cho may len ngoi....",
-        "Du ban ma sac may thich thi cu len mam tren ma ngoi!!!",
-        "Co dieu may len nho rang.....",
-        "Giua cho voi nguoi se chang bao gio co su cong bang.,",
-        "Du co co the hien hay la dang nguy bien thi an tuong may chi la 1 tieng ang !!",
-        "DIT CON ME!!!",
-        "Dop loi bon tao nhu 1 con cho!!!",
-        "Con deo nao cung nhu con nao!!!",
-        "Hai!!!",
-        "Du ma nao cac a",
-        "Lich su thi khong co - Chi co cai mau choi cho thi khong ai sanh bang",
-        "thang nao lon",
-        "thang mat cac",
-        "thang nao lon",
-        "thang mat cac",
-        "thang nao lon",
-        "thang mat cac",
-        "thang nao lon",
-        "thang mat cac",
-        "thang nao lon",
-        "thang mat cac",
-        "thang nao lon",
-        "Cai lon",
-        "Di me may ra day bo xem nao",
-        "Di me may ra day doc cho het",
-        "Du con di me may",
-        "thang oc cuc",
-        "me m de m ra dau lon chu duoc con cac gi",
-        "tinh trung khuyet tat",
-        "hoi do ba may deo dung bao nen loi ra thang mat cac nhu may do",
-        "du di me may",
-        "dit con me may",
-        "Dit me bo goi deo nghe a",
-        "Dit me m ra doc ne",
-        "di lon",
-        "DIT MEEEEEEEEEE MAY!!!",
-        "tam biet may con di",
-        "bo may di lam viec co ich cho xa hoi",
-        "deo o lai noi chuyen moi may dua ngu nhu may",
-        "can than ti acc fb may deo con nha",
-        "gio thi bye",
-        "may tuong xong roi a deo co dau nam mo di con tinh trung khuyet tat",
-        "dit cai lon me may con cho suc sinh vat hoc nay deo ai day may gap nguoi lon phai le phep a",
-        "cai con di dau trau mat nguoi nay bo may tuong cai buoi vao mom may cho may bot noi nhe",
-        "a ma quen thu suc vat nhu may thi deo co cua ma ngam cac tao",
-        "Dong thu ngu nguc ma cu to ve ta day thuong dang, can than cai mom khong la deo co cai rang nhai com",
-        "bo me thi lam chet con di me dau co biet con pho ha thien lon nhu may o nha xam cac nhu nay",
-        "thu cua may thi bot len mang xam lon o nha dang hang lam lon cong cong kiem tien bao hieu cha me con kip con di a",
-        "ba gia may vi mot phut nung lon nhung lai deo co trach nhiem moi lai sanh ra thu nhu may roi deo biet day may",
-        "tha ong ba de trung ga trung vit an con co y nghia hon la dau lon dai ra thu nhu may",
-        "Kiem moi lon nguoi roi nhe hong con ha ba suc vat quai thai",
-        "Dit con me lan sau con ham lon nhu nay thi bo may lay cu gia tat vao lon cho may tinh ngo nghe chua",
-        "cai lon me may noi nhe noi khe thi deo nghe phai di cai lon vao mat may thi moi chiu tinh",
-        "thu am binh dau thai ma lai bu cac ngua",
-        "Nung lon it thoi nghe chua con di cho",
-        "Con gio thi tien vong ve am tao dia phu di suc vat",
-        "BYE MAY CON LONNNNNNNNMNNNNNNMNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN"
-    ];
+setTimeout(() => {a({body: "Mày ra đây tao bảo" + " " + name, mentions: arraytag})}, 5000);
+setTimeout(() => {a({body: "Hiện hồn nhanh con chó" + " " + name, mentions: arraytag})}, 7000);
+setTimeout(() => {a({body: "Hiện hồn bố mày hỏi tội" + " " + name, mentions: arraytag})}, 9000);
+setTimeout(() => {a({body: "Mày trốn khi nào mới hiện hồn đây" + " " + name, mentions: arraytag})}, 12000);
+setTimeout(() => {a({body: "Đ!t cụ mày nữa hiện hồn" + " " + name, mentions: arraytag})}, 15000);
+setTimeout(() => {a({body: "Hiện hồn nhanh không tao đốt nhà mày giờ" + " " + name, mentions: arraytag})}, 17000);
+setTimeout(() => {a({body: "Nhanh ra chửi nhau với tao" + " " + name, mentions: arraytag})}, 20000);
+setTimeout(() => {a({body: "Tao ném trứng thối đổ dầu đổ xăng vào nhà mày giờ" + " " + name, mentions: arraytag})}, 23000);
+setTimeout(() => {a({body: "Con cặc địt mẹ mày" + " " + name, mentions: arraytag})}, 25000);
+setTimeout(() => {a({body: "Đéo ra nữa bố mày đốt nhà mày" + " " + name, mentions: arraytag})}, 28500);
+setTimeout(() => {a({body: "Bố mày bắn rap chết cụ mày giờ" + " " + name, mentions: arraytag})}, 31000);
+setTimeout(() => {a({body: "Mày vẫn đéo dám ra à" + " " + name, mentions: arraytag})}, 36000);
+setTimeout(() => {a({body: "Vậy thì xin mời nghe tao rap địt chết cả lò mày nhà con" + " " + name, mentions: arraytag})}, 39000);
+setTimeout(() => {a({body: "Trước đó cho tao xin nghỉ 1p nhé" + " " + name, mentions: arraytag})}, 40000);
+setTimeout(() => {a({body: "Xin phép mở đầu thì" + " " + name, mentions: arraytag})}, 65000);
+setTimeout(() => {a({body: "Đầu tiên tao xin phép địt từ trên xuống dưới con" + " " + name, mentions: arraytag})}, 70000);
+setTimeout(() => {a({body: "Tao địt từ lỗ lồn đến lỗ nhị con lồn" + " " + name, mentions: arraytag})}, 75000);
+setTimeout(() => {a({body: "Lồn thì to như lồn trâu thủ dâm ống cống ấy nhé con" + " " + name, mentions: arraytag})}, 80000);
+setTimeout(() => {a({body: "Tao địt chắc 2 thằng như tao chưa đủ lấp cái lỗ lồn nhà mày đâu" + " " + name, mentions: arraytag})}, 85000);
+setTimeout(() => {a({body: "Đ!t con mẹ mày" + " " + name, mentions: arraytag})} , 86000);
+setTimeout(() => {a({body: "Mày ra đây tao bảoHiện hồn nhanh con chó" + " " + name, mentions: arraytag})} , 87000);
+setTimeout(() => {a({body: "Hiện hồn nhanh con chó" + " " + name, mentions: arraytag})} , 88000);
+setTimeout(() => {a({body: "Hiện hồn bố mày hỏi tội" + " " + name, mentions: arraytag})} , 89000);
+setTimeout(() => {a({body: "Mày trốn khi nào mới hiện hồn đây" + " " + name, mentions: arraytag})} , 90000);
+setTimeout(() => {a({body: "Đ!t cụ mày nữa hiện hồn" + " " + name, mentions: arraytag})} , 91000);
+setTimeout(() => {a({body: "Hiện hồn nhanh không tao đốt nhà mày giờ" + " " + name, mentions: arraytag})} , 92000);
+setTimeout(() => {a({body: "Địt mẹ mày bố nói tử tế mà đéo dậy à" + " " + name, mentions: arraytag})} , 93000);
+setTimeout(() => {a({body: "Nhanh ra chửi nhau với tao" + " " + name, mentions: arraytag})} , 94000);
+setTimeout(() => {a({body: "Con mẹ mày ra đây đi thằng lồn" + " " + name, mentions: arraytag})} , 95000);
+setTimeout(() => {a({body: "Hiện hồn đi thằng mặt lồn" + " " + name, mentions: arraytag})} , 96000);
+setTimeout(() => {a({body: "Đĩ mẹ mày ra đây bô xem nào" + " " + name, mentions: arraytag})} , 97000);
+setTimeout(() => {a({body: "Tao ném trứng thối đổ dầu đổ xăng vào nhà mày giờ" + " " + name, mentions: arraytag})} , 98000);
+setTimeout(() => {a({body: "Địt mẹ bố gọi đéo nghe à" + " " + name, mentions: arraytag})} , 99000);
+setTimeout(() => {a({body: "Hiện ra bố mày xem nào" + " " + name, mentions: arraytag})} , 100000);
+setTimeout(() => {a({body: "Con cặc địt mẹ mày" + " " + name, mentions: arraytag})} , 101000);
 
-    const sendMessages = () => {
-        for (let i = 0; i < messages.length; i++) {
-            setTimeout(() => {
-                if (activeThreads.has(event.threadID)) {
-                    api.sendMessage({ body: messages[i] + " " + name, mentions: arraytag }, event.threadID);
-                }
-            }, i * 5000);
-        }
-    };
-
-    sendMessages();
-};
+setTimeout(() => {a({body: "Bố mày bắn rap chết cụ mày giờ" + " " + name, mentions: arraytag})} , 102000);
+setTimeout(() => {a({body: "Vậy thì xin mời nghe tao rap địt chết cả lò mày nhà con" + " " + name, mentions: arraytag})} , 103000);
+setTimeout(() => {a({body: "Đầu tiên tao xin phép địt từ trên xuống dưới con" + " " + name, mentions: arraytag})} , 104000);
+setTimeout(() => {a({body: "Tao địt từ lỗ lồn đến lỗ nhị con lồn" + " " + name, mentions: arraytag})} , 105000);
+setTimeout(() => {a({body: "Lồn thì to như lồn trâu thủ dâm ống cống ấy nhé con" + " " + name, mentions: arraytag})} , 106000);
+setTimeout(() => {a({body: "Tao địt chắc 2 thằng như tao chưa đủ lấp cái lỗ lồn nhà mày đâu" + " " + name, mentions: arraytag})} , 10700);
+setTimeout(() => {a({body: "Đụ con đĩ mẹ mày" + " " + name, mentions: arraytag})} , 108000);
+setTimeout(() => {a({body: "thằng óc cức" + " " + name, mentions: arraytag})} , 109000);
+setTimeout(() => {a({body: "mẹ m đẻ m ra đau lồn chứ được con cặc gì" + " " + name, mentions: arraytag})} , 110000);
+setTimeout(() => {a({body: "tinh trùng khuyết tật" + " " + name, mentions: arraytag})} , 111000);
+setTimeout(() => {a({body: "hồi đó ba mày đéo dùng bao nên lòi ra thằng mặt cặc như mày đó" + " " + name, mentions: arraytag})} , 112000);
+setTimeout(() => {a({body: "đụ đĩ mẹ mày" + " " + name, mentions: arraytag})} , 113000);
+setTimeout(() => {a({body: "địt con mẹ mày" + " " + name, mentions: arraytag})} , 114000);
+setTimeout(() => {a({body: "Địt mẹ bố gọi đéo nghe à" + " " + name, mentions: arraytag})} , 115000);
+setTimeout(() => {a({body: "Hoá ra cũng chỉ là con chó mang hình dáng người" + " " + name, mentions: arraytag})} , 116000);
+setTimeout(() => {a({body: " Sống ở đời mà cứ như Hề trong rạp xiếc : ))" + " " + name, mentions: arraytag})} , 117000);
+setTimeout(() => {a({body: "Mày đừng so sánh bọn tao với nó" + " " + name, mentions: arraytag})} , 118000);
+setTimeout(() => {a({body: "vì nó là chó còn tao là người" + " " + name, mentions: arraytag})} , 119000);
+setTimeout(() => {a({body: "Mày đừng bật cười khi nghe điều đó" + " " + name, mentions: arraytag})} , 120000);
+setTimeout(() => {a({body: "vì cả mày và nó đều chó như nhau" + " " + name, mentions: arraytag})} , 121000);
+setTimeout(() => {a({body: "Xã hội đổi màu" + " " + name, mentions: arraytag})} , 122000);
+setTimeout(() => {a({body: "Làm người thì khó, làm chó thì dễ ..!!" + " " + name, mentions: arraytag})} , 123000);
+setTimeout(() => {a({body: "Sống phải biết nghĩ" + " " + name, mentions: arraytag})} , 124000);
+setTimeout(() => {a({body: "Cuộc sống phức tạp, xã hội bon chen !!" + " " + name, mentions: arraytag})} , 1250000);
+setTimeout(() => {a({body: " Sống nghèo, sống khó chứ đừng sống CHÓ nha con" + " " + name, mentions: arraytag})} , 126000);
+setTimeout(() => {a({body: "Cứ soi gương nhiều vào" + " " + name, mentions: arraytag})} , 127000);
+setTimeout(() => {a({body: "Sống – Là phải biết điều" + " " + name, mentions: arraytag})} , 128000);
+setTimeout(() => {a({body: " Đừng tỏ vẻ máu liều nhiều hơn máu não" + " " + name, mentions: arraytag})} , 129000);
+setTimeout(() => {a({body: "Thích nổi và chơi trội tao sẽ cho mày lên ngôi…." + " " + name, mentions: arraytag})} , 130000);
+setTimeout(() => {a({body: "Đú bẩn mà sấc mày thích thì cứ lên mâm trên mà ngồi!!!" + " " + name, mentions: arraytag})} , 131000);
+setTimeout(() => {a({body: "Có điều mày lên nhớ rằng….." + " " + name, mentions: arraytag})} , 132000);
+setTimeout(() => {a({body: "Giữa chó với người sẽ chẳng bao giờ có sự công bằng.," + " " + name, mentions: arraytag})} , 133000);
+setTimeout(() => {a({body: "Dù có cố thể hiện hay là đang nguỵ biện thì ấn tượng mày chỉ là 1 tiếng ẳng !!" + " " + name, mentions: arraytag})} , 134000);
+setTimeout(() => {a({body: "ĐỊT CON MẸ!!!" + " " + name, mentions: arraytag})} , 135000);
+setTimeout(() => {a({body: "Đớp lời bọn tao như 1 con chó!!!" + " " + name, mentions: arraytag})} , 136000);
+setTimeout(() => {a({body: "Con đéo nào cũng như con nào!!!" + " " + name, mentions: arraytag})} , 137000);
+setTimeout(() => {a({body: "Hài!!!" + " " + name, mentions: arraytag})} , 138000);
+setTimeout(() => {a({body: "Đụ má não cặc à" + " " + name, mentions: arraytag})} , 139000);
+setTimeout(() => {a({body: "Lịch sự thì không có – Chỉ có cái máu chơi chó thì không ai sánh bằng" + " " + name, mentions: arraytag})} , 140000);
+setTimeout(() => {a({body: "thằng não lồn" + " " + name, mentions: arraytag})} , 141000);
+setTimeout(() => {a({body: "thằng mặt cặc" + " " + name, mentions: arraytag})} , 142000);
+setTimeout(() => {a({body: "thằng não lồn" + " " + name, mentions: arraytag})} , 143000);
+setTimeout(() => {a({body: "thằng mặt cặc" + " " + name, mentions: arraytag})} , 144000);
+setTimeout(() => {a({body: "thằng não lồn" + " " + name, mentions: arraytag})} , 145000);
+setTimeout(() => {a({body: "thằng mặt cặc" + " " + name, mentions: arraytag})} , 146000);
+setTimeout(() => {a({body: "thằng não lồn" + " " + name, mentions: arraytag})} , 147000);
+setTimeout(() => {a({body: "thằng mặt cặc" + " " + name, mentions: arraytag})} , 148000);
+setTimeout(() => {a({body: "thằng não lồn" + " " + name, mentions: arraytag})} , 149000);
+setTimeout(() => {a({body: "thằng mặt cặc" + " " + name, mentions: arraytag})} , 150000);
+setTimeout(() => {a({body: "thằng não lồn" + " " + name, mentions: arraytag})} , 151000);
+setTimeout(() => {a({body: "Cái lồn" + " " + name, mentions: arraytag})} , 152000);
+setTimeout(() => {a({body: "Đĩ mẹ mày ra đây bố xem nào" + " " + name, mentions: arraytag})} , 153000);
+setTimeout(() => {a({body: "Đĩ mẹ mày ra đây đọc cho hết" + " " + name, mentions: arraytag})} , 154000);
+setTimeout(() => {a({body: "Đụ con đĩ mẹ mày" + " " + name, mentions: arraytag})} , 155000);
+setTimeout(() => {a({body: "thằng óc cức" + " " + name, mentions: arraytag})} , 156000);
+setTimeout(() => {a({body: "mẹ m đẻ m ra đau lồn chứ được con cặc gì" + " " + name, mentions: arraytag})} , 157000);
+setTimeout(() => {a({body: "tinh trùng khuyết tật" + " " + name, mentions: arraytag})} , 158000);
+setTimeout(() => {a({body: "hồi đó ba mày đéo dùng bao nên lòi ra thằng mặt cặc như mày đó" + " " + name, mentions: arraytag})} , 159000);
+setTimeout(() => {a({body: "đụ đĩ mẹ mày" + " " + name, mentions: arraytag})} , 160000);
+setTimeout(() => {a({body: "địt con mẹ mày" + " " + name, mentions: arraytag})} , 161000);
+setTimeout(() => {a({body: "Địt mẹ bố gọi đéo nghe à" + " " + name, mentions: arraytag})} , 162000);
+setTimeout(() => {a({body: "Địt mẹ m ra đọc nè" + " " + name, mentions: arraytag})} , 163000);
+setTimeout(() => {a({body: "đĩ lồn" + " " + name, mentions: arraytag})} , 164000);
+setTimeout(() => {a({body: "ĐỊT MẸEEEEEEEEE MÀY!!!" + " " + name, mentions: arraytag})} , 165000);
+setTimeout(() => {a({body: "Đ!t con mẹ mày" + " " + name, mentions: arraytag})}, 166000);
+setTimeout(() => {a({body: "Mày ra đây tao bảo" + " " + name, mentions: arraytag})}, 167000);
+setTimeout(() => {a({body: "Hiện hồn nhanh con chó" + " " + name, mentions: arraytag})}, 168000);
+setTimeout(() => {a({body: "Hiện hồn bố mày hỏi tội" + " " + name, mentions: arraytag})}, 169000);
+setTimeout(() => {a({body: "Mày trốn khi nào mới hiện hồn đây" + " " + name, mentions: arraytag})}, 17000);
+setTimeout(() => {a({body: "Đ!t cụ mày nữa hiện hồn" + " " + name, mentions: arraytag})}, 171000);
+setTimeout(() => {a({body: "Hiện hồn nhanh không tao đốt nhà mày giờ" + " " + name, mentions: arraytag})}, 172000);
+setTimeout(() => {a({body: "Nhanh ra chửi nhau với tao" + " " + name, mentions: arraytag})}, 173000);
+setTimeout(() => {a({body: "Tao ném trứng thối đổ dầu đổ xăng vào nhà mày giờ" + " " + name, mentions: arraytag})}, 174000);
+setTimeout(() => {a({body: "Con cặc địt mẹ mày" + " " + name, mentions: arraytag})}, 174000);
+setTimeout(() => {a({body: "Đéo ra nữa bố mày đốt nhà mày" + " " + name, mentions: arraytag})}, 175000);
+setTimeout(() => {a({body: "Bố mày bắn rap chết cụ mày giờ" + " " + name, mentions: arraytag})}, 176000);
+setTimeout(() => {a({body: "Mày vẫn đéo dám ra à" + " " + name, mentions: arraytag})}, 177000);
+setTimeout(() => {a({body: "Vậy thì xin mời nghe tao rap địt chết cả lò mày nhà con" + " " + name, mentions: arraytag})}, 178000);
+setTimeout(() => {a({body: "Tao địt từ lỗ lồn đến lỗ nhị con lồn" + " " + name, mentions: arraytag})}, 179000);
+setTimeout(() => {a({body: "Lồn thì to như lồn trâu thủ dâm ống cống ấy nhé con" + " " + name, mentions: arraytag})}, 180000);
+setTimeout(() => {a({body: "Tao địt chắc 2 thằng như tao chưa đủ lấp cái lỗ lồn nhà mày đâu" + " " + name, mentions: arraytag})}, 18100);
+setTimeout(() => {a({body: "Đ!t con mẹ mày" + " " + name, mentions: arraytag})} , 182000);
+setTimeout(() => {a({body: "Mày ra đây tao bảoHiện hồn nhanh con chó" + " " + name, mentions: arraytag})} , 183000);
+setTimeout(() => {a({body: "Hiện hồn nhanh con chó" + " " + name, mentions: arraytag})} , 184000);
+setTimeout(() => {a({body: "Hiện hồn bố mày hỏi tội" + " " + name, mentions: arraytag})} , 185000);
+setTimeout(() => {a({body: "Mày trốn khi nào mới hiện hồn đây" + " " + name, mentions: arraytag})} , 186000);
+setTimeout(() => {a({body: "Đ!t cụ mày nữa hiện hồn" + " " + name, mentions: arraytag})} , 187000);
+setTimeout(() => {a({body: "Hiện hồn nhanh không tao đốt nhà mày giờ" + " " + name, mentions: arraytag})} , 188000);
+setTimeout(() => {a({body: "Địt mẹ mày bố nói tử tế mà đéo dậy à" + " " + name, mentions: arraytag})} , 189000);
+setTimeout(() => {a({body: "Nhanh ra chửi nhau với tao" + " " + name, mentions: arraytag})} , 190000);
+setTimeout(() => {a({body: "Con mẹ mày ra đây đi thằng lồn" + " " + name, mentions: arraytag})} , 191000);
+setTimeout(() => {a({body: "Hiện hồn đi thằng mặt lồn" + " " + name, mentions: arraytag})} , 192000);
+setTimeout(() => {a({body: "Đĩ mẹ mày ra đây bô xem nào" + " " + name, mentions: arraytag})} , 193000);
+setTimeout(() => {a({body: "Tao ném trứng thối đổ dầu đổ xăng vào nhà mày giờ" + " " + name, mentions: arraytag})} , 194000);
+setTimeout(() => {a({body: "Địt mẹ bố gọi đéo nghe à" + " " + name, mentions: arraytag})} , 195000);
+setTimeout(() => {a({body: "Hiện ra bố mày xem nào" + " " + name, mentions: arraytag})} , 196000);
+setTimeout(() => {a({body: "Con cặc địt mẹ mày" + " " + name, mentions: arraytag})} , 197000);
+setTimeout(() => {a({body: "Bố mày bắn rap chết cụ mày giờ" + " " + name, mentions: arraytag})} , 198000);
+setTimeout(() => {a({body: "Vậy thì xin mời nghe tao rap địt chết cả lò mày nhà con" + " " + name, mentions: arraytag})} , 199000);
+setTimeout(() => {a({body: "Đầu tiên tao xin phép địt từ trên xuống dưới con" + " " + name, mentions: arraytag})} , 200000);
+setTimeout(() => {a({body: "Tao địt từ lỗ lồn đến lỗ nhị con lồn" + " " + name, mentions: arraytag})} , 201000);
+setTimeout(() => {a({body: "Lồn thì to như lồn trâu thủ dâm ống cống ấy nhé con" + " " + name, mentions: arraytag})} , 202000);
+setTimeout(() => {a({body: "Tao địt chắc 2 thằng như tao chưa đủ lấp cái lỗ lồn nhà mày đâu" + " " + name, mentions: arraytag})} ,203000);
+setTimeout(() => {a({body: "Đụ con đĩ mẹ mày" + " " + name, mentions: arraytag})} , 204000);
+setTimeout(() => {a({body: "thằng óc cức" + " " + name, mentions: arraytag})} , 205000);
+setTimeout(() => {a({body: "mẹ m đẻ m ra đau lồn chứ được con cặc gì" + " " + name, mentions: arraytag})} , 206000);
+setTimeout(() => {a({body: "tinh trùng khuyết tật" + " " + name, mentions: arraytag})} , 207000);
+setTimeout(() => {a({body: "hồi đó ba mày đéo dùng bao nên lòi ra thằng mặt cặc như mày đó" + " " + name, mentions: arraytag})} , 208000);
+setTimeout(() => {a({body: "đụ đĩ mẹ mày" + " " + name, mentions: arraytag})} , 209000);
+setTimeout(() => {a({body: "địt con mẹ mày" + " " + name, mentions: arraytag})} , 210000);
+setTimeout(() => {a({body: "Địt mẹ bố gọi đéo nghe à" + " " + name, mentions: arraytag})} ,211000);
+setTimeout(() => {a({body: "Hoá ra cũng chỉ là con chó mang hình dáng người" + " " + name, mentions: arraytag})} , 2012000);
+setTimeout(() => {a({body: " Sống ở đời mà cứ như Hề trong rạp xiếc : ))" + " " + name, mentions: arraytag})} , 217000);
+setTimeout(() => {a({body: "Mày đừng so sánh bọn tao với nó" + " " + name, mentions: arraytag})} , 218000);
+setTimeout(() => {a({body: "vì nó là chó còn tao là người" + " " + name, mentions: arraytag})} , 219000);
+setTimeout(() => {a({body: "Mày đừng bật cười khi nghe điều đó" + " " + name, mentions: arraytag})} , 220000);
+setTimeout(() => {a({body: "vì cả mày và nó đều chó như nhau" + " " + name, mentions: arraytag})} , 221000);
+setTimeout(() => {a({body: "Xã hội đổi màu" + " " + name, mentions: arraytag})} , 222000);
+setTimeout(() => {a({body: "Làm người thì khó, làm chó thì dễ ..!!" + " " + name, mentions: arraytag})} , 223000);
+setTimeout(() => {a({body: "Sống phải biết nghĩ" + " " + name, mentions: arraytag})} , 224000);
+setTimeout(() => {a({body: "Cuộc sống phức tạp, xã hội bon chen !!" + " " + name, mentions: arraytag})} , 2250000);
+setTimeout(() => {a({body: " Sống nghèo, sống khó chứ đừng sống CHÓ nha con" + " " + name, mentions: arraytag})} , 226000);
+setTimeout(() => {a({body: "Cứ soi gương nhiều vào" + " " + name, mentions: arraytag})} , 227000);
+setTimeout(() => {a({body: "Sống – Là phải biết điều" + " " + name, mentions: arraytag})} , 228000);
+setTimeout(() => {a({body: " Đừng tỏ vẻ máu liều nhiều hơn máu não" + " " + name, mentions: arraytag})} , 229000);
+setTimeout(() => {a({body: "Thích nổi và chơi trội tao sẽ cho mày lên ngôi…." + " " + name, mentions: arraytag})} , 230000);
+setTimeout(() => {a({body: "Đú bẩn mà sấc mày thích thì cứ lên mâm trên mà ngồi!!!" + " " + name, mentions: arraytag})} , 231000);
+setTimeout(() => {a({body: "Có điều mày lên nhớ rằng….." + " " + name, mentions: arraytag})} , 232000);
+setTimeout(() => {a({body: "Giữa chó với người sẽ chẳng bao giờ có sự công bằng.," + " " + name, mentions: arraytag})} , 233000);
+setTimeout(() => {a({body: "Dù có cố thể hiện hay là đang nguỵ biện thì ấn tượng mày chỉ là 1 tiếng ẳng !!" + " " + name, mentions: arraytag})} , 234000);
+setTimeout(() => {a({body: "ĐỊT CON MẸ!!!" + " " + name, mentions: arraytag})} , 235000);
+setTimeout(() => {a({body: "Đớp lời bọn tao như 1 con chó!!!" + " " + name, mentions: arraytag})} , 236000);
+setTimeout(() => {a({body: "Con đéo nào cũng như con nào!!!" + " " + name, mentions: arraytag})} , 237000);
+setTimeout(() => {a({body: "Hài!!!" + " " + name, mentions: arraytag})} , 238000);
+setTimeout(() => {a({body: "Đụ má não cặc à" + " " + name, mentions: arraytag})} , 239000);
+setTimeout(() => {a({body: "Lịch sự thì không có – Chỉ có cái máu chơi chó thì không ai sánh bằng" + " " + name, mentions: arraytag})} , 240000);
+setTimeout(() => {a({body: "thằng não lồn" + " " + name, mentions: arraytag})} , 241000);
+setTimeout(() => {a({body: "thằng mặt cặc" + " " + name, mentions: arraytag})} , 42000);
+setTimeout(() => {a({body: "thằng não lồn" + " " + name, mentions: arraytag})} , 243000);
+setTimeout(() => {a({body: "thằng mặt cặc" + " " + name, mentions: arraytag})} , 244000);
+setTimeout(() => {a({body: "thằng não lồn" + " " + name, mentions: arraytag})} , 245000);
+setTimeout(() => {a({body: "thằng mặt cặc" + " " + name, mentions: arraytag})} , 246000);
+setTimeout(() => {a({body: "thằng não lồn" + " " + name, mentions: arraytag})} , 247000);
+setTimeout(() => {a({body: "thằng mặt cặc" + " " + name, mentions: arraytag})} , 248000);
+setTimeout(() => {a({body: "thằng não lồn" + " " + name, mentions: arraytag})} , 249000);
+setTimeout(() => {a({body: "thằng mặt cặc" + " " + name, mentions: arraytag})} , 250000);
+setTimeout(() => {a({body: "thằng não lồn" + " " + name, mentions: arraytag})} , 251000);
+setTimeout(() => {a({body: "Cái lồn" + " " + name, mentions: arraytag})} , 252000);
+setTimeout(() => {a({body: "Đĩ mẹ mày ra đây bố xem nào" + " " + name, mentions: arraytag})} , 253000);
+setTimeout(() => {a({body: "Đĩ mẹ mày ra đây đọc cho hết" + " " + name, mentions: arraytag})} , 254000);
+setTimeout(() => {a({body: "Đụ con đĩ mẹ mày" + " " + name, mentions: arraytag})} , 255000);
+setTimeout(() => {a({body: "thằng óc cức" + " " + name, mentions: arraytag})} , 256000);
+setTimeout(() => {a({body: "mẹ m đẻ m ra đau lồn chứ được con cặc gì" + " " + name, mentions: arraytag})} , 257000);
+setTimeout(() => {a({body: "tinh trùng khuyết tật" + " " + name, mentions: arraytag})} , 258000);
+setTimeout(() => {a({body: "hồi đó ba mày đéo dùng bao nên lòi ra thằng mặt cặc như mày đó" + " " + name, mentions: arraytag})} , 259000);
+setTimeout(() => {a({body: "đụ đĩ mẹ mày" + " " + name, mentions: arraytag})} , 260000);
+setTimeout(() => {a({body: "địt con mẹ mày" + " " + name, mentions: arraytag})} , 261000);
+setTimeout(() => {a({body: "Địt mẹ bố gọi đéo nghe à" + " " + name, mentions: arraytag})} , 262000);
+setTimeout(() => {a({body: "Địt mẹ m ra đọc nè" + " " + name, mentions: arraytag})} , 263000);
+setTimeout(() => {a({body: "đĩ lồn" + " " + name, mentions: arraytag})} , 264000);
+setTimeout(() => {a({body: "ĐỊT MẸEEEEEEEEE MÀY!!!" + " " + name, mentions: arraytag})} , 265000);
+setTimeout(() => {a({body: "Đ!t con mẹ mày" + " " + name, mentions: arraytag})}, 266000);
+setTimeout(() => {a({body: "Mày ra đây tao bảo" + " " + name, mentions: arraytag})}, 267000);
+setTimeout(() => {a({body: "Hiện hồn nhanh con chó" + " " + name, mentions: arraytag})}, 268000);
+setTimeout(() => {a({body: "Hiện hồn bố mày hỏi tội" + " " + name, mentions: arraytag})}, 269000);
+setTimeout(() => {a({body: "Mày trốn khi nào mới hiện hồn đây" + " " + name, mentions: arraytag})}, 27000);
+setTimeout(() => {a({body: "Đ!t cụ mày nữa hiện hồn" + " " + name, mentions: arraytag})}, 271000);
+setTimeout(() => {a({body: "Hiện hồn nhanh không tao đốt nhà mày giờ" + " " + name, mentions: arraytag})}, 272000);
+setTimeout(() => {a({body: "Nhanh ra chửi nhau với tao" + " " + name, mentions: arraytag})}, 273000);
+setTimeout(() => {a({body: "Tao ném trứng thối đổ dầu đổ xăng vào nhà mày giờ" + " " + name, mentions: arraytag})}, 274000);
+setTimeout(() => {a({body: "Đéo ra nữa bố mày đốt nhà mày" + " " + name, mentions: arraytag})}, 275000);
+setTimeout(() => {a({body: "Bố mày bắn rap chết cụ mày giờ" + " " + name, mentions: arraytag})}, 276000);
+setTimeout(() => {a({body: "Mày vẫn đéo dám ra à" + " " + name, mentions: arraytag})}, 277000);
+setTimeout(() => {a({body: "Vậy thì xin mời nghe tao rap địt chết cả lò mày nhà con" + " " + name, mentions: arraytag})}, 278000);
+setTimeout(() => {a({body: "Tao địt từ lỗ lồn đến lỗ nhị con lồn" + " " + name, mentions: arraytag})}, 279000);
+setTimeout(() => {a({body: "Lồn thì to như lồn trâu thủ dâm ống cống ấy nhé con" + " " + name, mentions: arraytag})}, 28000);
+setTimeout(() => {a({body: "Tao địt chắc 2 thằng như tao chưa đủ lấp cái lỗ lồn nhà mày đâu" + " " + name, mentions: arraytag})}, 28100);
+setTimeout(() => {a({body: "Đ!t con mẹ mày" + " " + name, mentions: arraytag})} , 282000);
+setTimeout(() => {a({body: "Mày ra đây tao bảoHiện hồn nhanh con chó" + " " + name, mentions: arraytag})} , 283000);
+setTimeout(() => {a({body: "Hiện hồn nhanh con chó" + " " + name, mentions: arraytag})} , 284000);
+setTimeout(() => {a({body: "Hiện hồn bố mày hỏi tội" + " " + name, mentions: arraytag})} , 285000);
+setTimeout(() => {a({body: "Mày trốn khi nào mới hiện hồn đây" + " " + name, mentions: arraytag})} , 286000);
+setTimeout(() => {a({body: "Đ!t cụ mày nữa hiện hồn" + " " + name, mentions: arraytag})} , 287000);
+setTimeout(() => {a({body: "Hiện hồn nhanh không tao đốt nhà mày giờ" + " " + name, mentions: arraytag})} , 288000);
+setTimeout(() => {a({body: "Địt mẹ mày bố nói tử tế mà đéo dậy à" + " " + name, mentions: arraytag})} , 289000);
+setTimeout(() => {a({body: "Nhanh ra chửi nhau với tao" + " " + name, mentions: arraytag})} , 290000);
+setTimeout(() => {a({body: "Con mẹ mày ra đây đi thằng lồn" + " " + name, mentions: arraytag})} , 291000);
+setTimeout(() => {a({body: "Hiện hồn đi thằng mặt lồn" + " " + name, mentions: arraytag})} , 292000);
+setTimeout(() => {a({body: "Đĩ mẹ mày ra đây bô xem nào" + " " + name, mentions: arraytag})} , 293000);
+setTimeout(() => {a({body: "Tao ném trứng thối đổ dầu đổ xăng vào nhà mày giờ" + " " + name, mentions: arraytag})} , 294000);
+setTimeout(() => {a({body: "Địt mẹ bố gọi đéo nghe à" + " " + name, mentions: arraytag})} , 295000);
+setTimeout(() => {a({body: "Hiện ra bố mày xem nào" + " " + name, mentions: arraytag})} , 296000);
+setTimeout(() => {a({body: "Con cặc địt mẹ mày" + " " + name, mentions: arraytag})} , 297000);
+setTimeout(() => {a({body: "Bố mày bắn rap chết cụ mày giờ" + " " + name, mentions: arraytag})} , 298000);
+setTimeout(() => {a({body: "Vậy thì xin mời nghe tao rap địt chết cả lò mày nhà con" + " " + name, mentions: arraytag})} , 299000);
+setTimeout(() => {a({body: "Đầu tiên tao xin phép địt từ trên xuống dưới con" + " " + name, mentions: arraytag})} , 300000);
+setTimeout(() => {a({body: "Tao địt từ lỗ lồn đến lỗ nhị con lồn" + " " + name, mentions: arraytag})} , 301000);
+setTimeout(() => {a({body: "Lồn thì to như lồn trâu thủ dâm ống cống ấy nhé con" + " " + name, mentions: arraytag})} , 302000);
+setTimeout(() => {a({body: "Tao địt chắc 2 thằng như tao chưa đủ lấp cái lỗ lồn nhà mày đâu" + " " + name, mentions: arraytag})} ,303000);
+setTimeout(() => {a({body: "Đụ con đĩ mẹ mày" + " " + name, mentions: arraytag})} , 304000);
+setTimeout(() => {a({body: "thằng óc cức" + " " + name, mentions: arraytag})} , 305000);
+setTimeout(() => {a({body: "mẹ m đẻ m ra đau lồn chứ được con cặc gì" + " " + name, mentions: arraytag})} , 306000);
+setTimeout(() => {a({body: "tinh trùng khuyết tật" + " " + name, mentions: arraytag})} , 307000);
+setTimeout(() => {a({body: "hồi đó ba mày đéo dùng bao nên lòi ra thằng mặt cặc như mày đó" + " " + name, mentions: arraytag})} , 308000);
+setTimeout(() => {a({body: "đụ đĩ mẹ mày" + " " + name, mentions: arraytag})} , 309000);
+setTimeout(() => {a({body: "địt con mẹ mày" + " " + name, mentions: arraytag})} , 310000);
+setTimeout(() => {a({body: "Địt mẹ bố gọi đéo nghe à" + " " + name, mentions: arraytag})} ,311000);
+setTimeout(() => {a({body: "Hoá ra cũng chỉ là con chó mang hình dáng người" + " " + name, mentions: arraytag})} , 312000);
+setTimeout(() => {a({body: " Sống ở đời mà cứ như Hề trong rạp xiếc : ))" + " " + name, mentions: arraytag})} , 317000);
+setTimeout(() => {a({body: "Mày đừng so sánh bọn tao với nó" + " " + name, mentions: arraytag})} , 318000);
+setTimeout(() => {a({body: "vì nó là chó còn tao là người" + " " + name, mentions: arraytag})} , 319000);
+setTimeout(() => {a({body: "Mày đừng bật cười khi nghe điều đó" + " " + name, mentions: arraytag})} , 320000);
+setTimeout(() => {a({body: "vì cả mày và nó đều chó như nhau" + " " + name, mentions: arraytag})} , 321000);
+setTimeout(() => {a({body: "Xã hội đổi màu" + " " + name, mentions: arraytag})} , 322000);
+setTimeout(() => {a({body: "Làm người thì khó, làm chó thì dễ ..!!" + " " + name, mentions: arraytag})} , 323000);
+setTimeout(() => {a({body: "Sống phải biết nghĩ" + " " + name, mentions: arraytag})} , 324000);
+setTimeout(() => {a({body: "Cuộc sống phức tạp, xã hội bon chen !!" + " " + name, mentions: arraytag})} , 325000);
+setTimeout(() => {a({body: " Sống nghèo, sống khó chứ đừng sống CHÓ nha con" + " " + name, mentions: arraytag})} , 326000);
+setTimeout(() => {a({body: "Cứ soi gương nhiều vào" + " " + name, mentions: arraytag})} , 327000);
+setTimeout(() => {a({body: "Sống – Là phải biết điều" + " " + name, mentions: arraytag})} , 328000);
+setTimeout(() => {a({body: " Đừng tỏ vẻ máu liều nhiều hơn máu não" + " " + name, mentions: arraytag})} , 329000);
+setTimeout(() => {a({body: "Thích nổi và chơi trội tao sẽ cho mày lên ngôi…." + " " + name, mentions: arraytag})} , 330000);
+setTimeout(() => {a({body: "Đú bẩn mà sấc mày thích thì cứ lên mâm trên mà ngồi!!!" + " " + name, mentions: arraytag})} , 331000);
+setTimeout(() => {a({body: "Có điều mày lên nhớ rằng….." + " " + name, mentions: arraytag})} , 332000);
+setTimeout(() => {a({body: "Giữa chó với người sẽ chẳng bao giờ có sự công bằng.," + " " + name, mentions: arraytag})} , 333000);
+setTimeout(() => {a({body: "Dù có cố thể hiện hay là đang nguỵ biện thì ấn tượng mày chỉ là 1 tiếng ẳng !!" + " " + name, mentions: arraytag})} , 334000);
+setTimeout(() => {a({body: "ĐỊT CON MẸ!!!" + " " + name, mentions: arraytag})} , 335000);
+setTimeout(() => {a({body: "Đớp lời bọn tao như 1 con chó!!!" + " " + name, mentions: arraytag})} , 336000);
+setTimeout(() => {a({body: "Con đéo nào cũng như con nào!!!" + " " + name, mentions: arraytag})} , 337000);
+setTimeout(() => {a({body: "Hài!!!" + " " + name, mentions: arraytag})} , 338000);
+setTimeout(() => {a({body: "Đụ má não cặc à" + " " + name, mentions: arraytag})} , 339000);
+setTimeout(() => {a({body: "Lịch sự thì không có – Chỉ có cái máu chơi chó thì không ai sánh bằng" + " " + name, mentions: arraytag})} , 340000);
+setTimeout(() => {a({body: "thằng não lồn" + " " + name, mentions: arraytag})} , 341000);
+setTimeout(() => {a({body: "thằng mặt cặc" + " " + name, mentions: arraytag})} , 342000);
+setTimeout(() => {a({body: "thằng não lồn" + " " + name, mentions: arraytag})} , 343000);
+setTimeout(() => {a({body: "thằng mặt cặc" + " " + name, mentions: arraytag})} , 344000);
+setTimeout(() => {a({body: "thằng não lồn" + " " + name, mentions: arraytag})} , 345000);
+setTimeout(() => {a({body: "thằng mặt cặc" + " " + name, mentions: arraytag})} , 346000);
+setTimeout(() => {a({body: "thằng não lồn" + " " + name, mentions: arraytag})} , 347000);
+setTimeout(() => {a({body: "thằng mặt cặc" + " " + name, mentions: arraytag})} , 348000);
+setTimeout(() => {a({body: "thằng não lồn" + " " + name, mentions: arraytag})} , 349000);
+setTimeout(() => {a({body: "thằng mặt cặc" + " " + name, mentions: arraytag})} , 350000);
+setTimeout(() => {a({body: "thằng não lồn" + " " + name, mentions: arraytag})} , 351000);
+setTimeout(() => {a({body: "Cái lồn" + " " + name, mentions: arraytag})} , 352000);
+setTimeout(() => {a({body: "Đĩ mẹ mày ra đây bố xem nào" + " " + name, mentions: arraytag})} , 353000);
+setTimeout(() => {a({body: "Đĩ mẹ mày ra đây đọc cho hết" + " " + name, mentions: arraytag})} , 354000);
+setTimeout(() => {a({body: "Đụ con đĩ mẹ mày" + " " + name, mentions: arraytag})} , 355000);
+setTimeout(() => {a({body: "thằng óc cức" + " " + name, mentions: arraytag})} , 356000);
+setTimeout(() => {a({body: "mẹ m đẻ m ra đau lồn chứ được con cặc gì" + " " + name, mentions: arraytag})} , 357000);
+setTimeout(() => {a({body: "tinh trùng khuyết tật" + " " + name, mentions: arraytag})} , 358000);
+setTimeout(() => {a({body: "hồi đó ba mày đéo dùng bao nên lòi ra thằng mặt cặc như mày đó" + " " + name, mentions: arraytag})} , 359000);
+setTimeout(() => {a({body: "đụ đĩ mẹ mày" + " " + name, mentions: arraytag})} , 360000);
+setTimeout(() => {a({body: "địt con mẹ mày" + " " + name, mentions: arraytag})} , 361000);
+setTimeout(() => {a({body: "Địt mẹ bố gọi đéo nghe à" + " " + name, mentions: arraytag})} , 362000);
+setTimeout(() => {a({body: "Địt mẹ m ra đọc nè" + " " + name, mentions: arraytag})} , 363000);
+setTimeout(() => {a({body: "đĩ lồn" + " " + name, mentions: arraytag})} , 364000);
+setTimeout(() => {a({body: "ĐỊT MẸEEEEEEEEE MÀY!!!" + " " + name, mentions: arraytag})} , 365000);
+setTimeout(() => {a({body: "tạm biệt mày con đĩ" + " " + name, mentions: arraytag})} , 366000);
+setTimeout(() => {a({body: "bố mày đi làm việc có ích cho xã hội" + " " + name, mentions: arraytag})} , 367000);
+setTimeout(() => {a({body: "đéo ở lại nói chuyện mới mấy đứa ngu như mày" + " " + name, mentions: arraytag})} , 368000);
+setTimeout(() => {a({body: "cẩn thận tí acc fb mày đéo còn nhá" + " " + name, mentions: arraytag})} , 369000);
+setTimeout(() => {a({body: "giờ thì bye" + " " + name, mentions: arraytag})} , 370000);
+setTimeout(() => {a({body: "BYE MÀY CON LỒNNNNNNNNMNNNNNNMNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN" + " " + name, mentions: arraytag})} , 371000);
+}

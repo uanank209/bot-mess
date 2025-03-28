@@ -3,15 +3,15 @@ const downfonts = "https://drive.google.com/u/0/uc?id=1uni8AiYk7prdrC7hgAmezaGTM
 const fontsName = 45
 const fontsInfo = 33
 const fontsOthers = 27
-const colorName = "#00FFFF"
+const colorName = "#000000"
 module.exports.config = {
   name: "cardbox",
   version: "2.0.0",
   hasPermssion: 0,
   credits: "D-Jukie",
-  description: "Tạo thông tin box của bạn",
-  commandCategory: "Thành Viên",
-  usages: "infobox",
+  description: "Xem thông tin box của bạn",
+  commandCategory: "tạo ảnh",
+  usages: "cardbox [tên]",
   cooldowns: 10,
   dependencies: {
     canvas: "",
@@ -82,7 +82,7 @@ module.exports.run = async function ({ api, event, args, Users }) {
     )
   ).data;
   let getWanted = (
-    await axios.get(encodeURI(`https://i.imgur.com/hHKQMW8.jpg`), {
+    await axios.get(encodeURI(`https://i.imgur.com/zVvx3bq.png`), {
       responseType: "arraybuffer",
     })
   ).data;
@@ -126,7 +126,7 @@ if(!fs.existsSync(__dirname+`${fonts}`)) {
         family: "Lobster"
     });
   ctx.font = `${fontsInfo}px Lobster`;
-  ctx.fillStyle = "#00FF00";
+  ctx.fillStyle = "#000000";
   ctx.textAlign = "start";
   fontSize = 20;
   ctx.fillText(`⊶ Số thành viên: ${threadMem}`, 439, 199);
@@ -135,12 +135,12 @@ if(!fs.existsSync(__dirname+`${fonts}`)) {
   ctx.fillText(`⊶ Nữ: ${nu}`, 439, 331);
   ctx.fillText(`⊶ Tổng số tin nhắn: ${sl}`, 439, 379);
   ctx.font = `${fontsOthers}px Lobster`;
-  ctx.fillStyle = "#00FF00";
+  ctx.fillStyle = "#000000";
   ctx.textAlign = "start";
   fontSize = 20;
   ctx.fillText(`ID BOX: ${id}`, 18, 470);
   ctx.font = `${fontsOthers}px Lobster`;
-  ctx.fillStyle = "#00FF00";
+  ctx.fillStyle = "#000000";
   ctx.textAlign = "start";
   fontSize = 20;
   ctx.fillText(`• Cùng với ${parseInt(threadMem)-3} thành viên khác...`, 607, 453);

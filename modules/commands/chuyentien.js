@@ -1,32 +1,31 @@
 module.exports.config = {
     name: "chuyentien",
-    version: "1.0.0",
+    version: "1.0.1",
     hasPermssion: 0,
-    credits: "",
-    description: "Chuyển tiền cho người khác.",
-    commandCategory: "Kiếm Tiền",
-    usages: "chuyentien [số tiền] @tag",
-    cooldowns: 0
-  };
-  
-  module.exports.run = async function({ Currencies, api, event, args, Users }) {
-    const { threadID, senderID, mentions, messageID } = event;  
-    const mention = Object.keys(mentions)[0];
-    if (!mention) return api.sendMessage('❌ Vui lòng tag người muốn chuyển tiền!', threadID, messageID);
-    const moneyy = parseInt(args[0]);
-    if (isNaN(moneyy) || moneyy <= 0) return api.sendMessage('❌ Vui lòng nhập số tiền hợp lệ muốn chuyển!', threadID, messageID);
-    const balance = (await Currencies.getData(senderID)).money;
-    if (moneyy > balance) return api.sendMessage('❌ Số tiền bạn muốn chuyển lớn hơn số dư hiện có !', threadID, messageID);
-    const name = await Users.getNameUser(mention);
-    const senderName = await Users.getNameUser(senderID);  
-    await Currencies.decreaseMoney(senderID, moneyy);
-    await Currencies.increaseMoney(mention, moneyy);  
-    return api.sendMessage({
-      body: `💸 ${senderName} đã chuyển cho ${name} ${moneyy}$!`,
-      mentions: [{
-        tag: name,
-        id: mention
-      }]
-    }, threadID, messageID);
-  };
-  
+    credits: "Mirai Team",
+    description: "Chuyển tiền của bản thân cho ai đó",
+    commandCategory: "Group",
+    usages: "pay @tag coins",
+    cooldowns: 5,
+     };
+
+module.exports.run = async ({ event, api, Currencies, args }) => {
+let { threadID, messageID, senderID } = event;
+const mention = Object.keys(event.mentions)[0];
+let name = event.mentions[mention].split(" ").length
+if(!mention) return api.sendMessage('Vui lòng tag người muốn chuyển tiền cho!',threadID,messageID);
+else {
+	if(!isNaN(args[0+ name])) {
+		const coins = parseInt(args[0+ name]);
+		let balance = (await Currencies.getData(senderID)).money;
+        if (coins <= 0) return api.sendMessage('Số tiền bạn muốn chuyển không hợp lệ',threadID,messageID);
+		if (coins > balance) return api.sendMessage('Số tiền bạn muốn chuyển lớn hơn số coins bạn hiện có!',threadID,messageID);
+		else {
+        return api.sendMessage({ body: 'Đã chuyển cho ' + event.mentions[mention].replace(/@/g, "") + ` ${args[0+ name]} $`}, threadID, async () => {
+            await Currencies.increaseMoney(mention, parseInt(coins));
+                  Currencies.decreaseMoney(senderID, parseInt(coins));
+            }, messageID);
+		}
+	} else return api.sendMessage('Vui lòng nhập số tiền muốn chuyển',threadID,messageID);
+}
+}

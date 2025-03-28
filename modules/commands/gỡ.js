@@ -1,11 +1,11 @@
 module.exports.config = {
 	name: "gỡ",
 	version: "1.0.0", 
-	hasPermssion: 0,
+	hasPermssion: 1,
 	credits: "HungCatMoi",
 	description: "Gỡ tin nhắn của Bot",
-	commandCategory: "Thành Viên", 
-	usages: "gỡ", 
+	commandCategory: "tiện ích", 
+	usages: "", 
 	cooldowns: 0,
 	dependencies: [] 
 };

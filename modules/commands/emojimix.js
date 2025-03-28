@@ -1,55 +1,32 @@
-const axios = require('axios');
-const fs = require('fs');
-
+const fs = require("fs");
 module.exports.config = {
-	name: "emojimix",
-	version: "1.0.0", 
-	hasPermssion: 0,
-	credits: "Goatbot Project - Converted by Eien Mojiki", 
-	description: "Mix emoji sử dụng Emoji Kitchen",
-	commandCategory: "Tiện ích",
-	usages: "emojimix <emoji1> <emoji2>",
-	cooldowns: 5,
+    name: "emojimix",
+    version: "1.0.1",
+    hasPermssion: 0,
+    credits: "Horizon",
+    description: "Ghép Icon",
+    commandCategory: "Game",
+    cooldowns: 5,
+    denpendencies: {
+        "fs": "",
+        "request": "",
+        "emoji-unicode": ""
+    }
 };
 
-module.exports.run = async function({ api, event, args }) {
-  const readStream = [];
-  const emoji1 = args[0];
-  const emoji2 = args[1];
-  if (!emoji1 || !emoji2) {
-    return api.sendMessage('⌧ · Vui lòng nhập emoji hợp lệ', event.threadID, event.messageID);
-  }
+const emojiUnicode = require("emoji-unicode");
+const { createReadStream, unlinkSync, writeFileSync } = require('fs');
 
-  try {
-    const generate1 = await generateEmojimix(emoji1, emoji2);
-		const generate2 = await generateEmojimix(emoji2, emoji1);
-
-		if (generate1)
-			readStream.push(generate1);
-		if (generate2)
-			readStream.push(generate2);
-  api.sendMessage({
-    body: `☑︎ · Mix thành công ${emoji1} và ${emoji2}`,
-    attachment: readStream
-   }, event.threadID, event.messageID)
-  } catch (err) {
-    api.sendMessage(`⌧ · Không thể mix ${emoji1} và ${emoji2}`, event.threadID, event.messageID)
-   }
-}
-
-async function generateEmojimix(emoji1, emoji2) {
-	try {
-		const { data: response } = await axios.get("https://goatbotserver.onrender.com/taoanhdep/emojimix", {
-			params: {
-				emoji1,
-				emoji2
-			},
-			responseType: "stream"
-		});
-		response.path = `emojimix${Date.now()}.png`;
-		return response;
-	}
-	catch (e) {
-		return null;
-	}
+module.exports.run = async function ({ api,event,args }) {
+    var axios = require('axios');
+        try {
+            if (args.length != 2 || !args[0] || !args[1]) return api.sendMessage("Hãy Bấm: emojimix 😢 🤣 hoặc emojimix emoji1 emoji2",event.threadID,event.messageID);
+                var emoji1 = "u"+emojiUnicode(args[0]),emoji2 = "u"+emojiUnicode(args[1]);
+                    var { data } = await axios.get(`https://www.gstatic.com/android/keyboard/emojikitchen/20201001/${emoji1}/${emoji1}_${emoji2}.png`,{  method: 'GET',  responseType: 'arraybuffer' });
+                writeFileSync(__dirname + "/cache/emojimix.png", Buffer.from(data, 'utf-8'));
+            return api.sendMessage({ body:"Emoji đã được mix của bạn nè",attachment: createReadStream(__dirname + "/cache/emojimix.png")},event.threadID,event.messgaeID);
+        }
+    catch {
+        return api.sendMessage("Lỗi rồi !, hãy thử với icon khác nhé !",event.threadID,event.messgaeID);
+    }
 }

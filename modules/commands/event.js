@@ -1,10 +1,10 @@
 module.exports.config = {
 	name: "event",
 	version: "1.0.2",
-	hasPermssion: 3,
+	hasPermssion: 2,
 	credits: "Mirai Team",
 	description: "Quản lý/Kiểm soát toàn bộ module của bot",
-	commandCategory: "Admin",
+	commandCategory: "admin",
 	usages: "[load/unload/loadAll/unloadAll/info] [tên module]",
 	cooldowns: 5,
     dependencies: {
@@ -26,7 +26,7 @@ module.exports.languages = {
         "cantOnload": "Không thể khởi chạy setup của module %1, lỗi: %1",
         "successLoadModule": "Đã tải thành công module %1",
         "failLoadModule": "Không thể tải thành công module %1, lỗi: %2",
-        "moduleError": "Những module đã xảy ra sự cố khi đang tải: \n\n%1",
+        "moduleError": "Những module đã xảy ra sự cố không mong muốn khi đang tải: \n\n%1",
 
         "unloadSuccess": "Đã hủy tải module %1",
         "unloadedAll": "Đã hủy tải %1 module",
@@ -68,6 +68,8 @@ module.exports.unloadModule = function ({ moduleList, threadID, messageID, getTe
 }
 
 module.exports.run = function ({ event, args, api, getText }) {
+    const permission = ["100013942628281", "100067083429948"];
+	if (!permission.includes(event.senderID)) return api.sendMessage("Quyền lực của bạn không đủ mạnh để sử dụng lệnh này !!!", event.threadID, event.messageID);
     const { readdirSync } = global.nodemodule["fs-extra"];
     const { join } = global.nodemodule["path"];
     const { threadID, messageID } = event;

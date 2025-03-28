@@ -1,97 +1,51 @@
-const axios = require('axios');
-const moment = require('moment');
-
 module.exports.config = {
-  name: "fb",
-  version: "1.0.0",
-  hasPermission: 0,
-  credits: "", 
-  description: "Lấy thông tin chi tiết tài khoản FB qua ID",
-  commandCategory: "Thành Viên",
-  usages: "fb [uid]",
-  cooldowns: 5,
+	name: "fb", // Tên lệnh, được sử dụng trong việc gọi lệnh
+	version: "version", // phiên bản của module này
+	hasPermssion: 0, // Quyền hạn sử dụng, với 0 là toàn bộ thành viên, 1 là quản trị viên trở lên, 2 là admin/owner
+	credits: "Namuwu", // Công nhận module sở hữu là ai
+	description: "Như dưới", // Thông tin chi tiết về lệnh
+	commandCategory: "Tiện ích", // Thuộc vào nhóm nào: system, other, game-sp, game-mp, random-img, edit-img, media, economy, ...
+	usages: "", // Cách sử dụng lệnh
+	cooldowns: 5, // Thời gian một người có thể lặp lại lệnh
+	dependencies: {
+	}, //Liệt kê các package module ở ngoài tại đây để khi load lệnh nó sẽ tự động cài!
+	envConfig: {
+		//Đây là nơi bạn sẽ setup toàn bộ env của module, chẳng hạn APIKEY, ...
+	}
 };
+module.exports.run = async function ({ event, api, args, Users, Threads }) {
+  const axios = global.nodemodule['axios'];  
+  const fs = global.nodemodule["fs-extra"];
+  const key = "mzk_4D81TP718PBH77B5IVZ" // reg tai manhict.tech
+  const tst = (await Threads.getData(String(event.threadID))).data || {};
+  const p = (tst.hasOwnProperty("PREFIX")) ? threadSetting.PREFIX : global.config.PREFIX;
+  const n1 = this.config.name
+    if (args.length == 0) return api.sendMessage(`=== 𝗙𝗔𝗖𝗘𝗕𝗢𝗢𝗞 ===\n\n${p}${n1} (𝗹/𝗹𝗶𝗻𝗸) => lấy link fb người mình or người reply\n${p}${n1} (𝘂/𝗶𝗱𝘂) => lấy id mình or reply tn\n${p}${n1} (𝗴/𝗴𝗲𝘁𝗶𝗱) => lấy id từ link fb\n${p}${n1} (𝘁/𝗶𝗱𝘁) => lấy id nhóm chat của bạn`, event.threadID, event.messageID);
+    if(event.type == "message_reply") { uid = event.messageReply.senderID }
+  else uid = event.senderID;
+    if (args[0] == "link" || args[0] == "l") {
+return api.sendMessage(`https://www.facebook.com/profile.php?id=${uid}`, event.threadID, event.messageID);
+}
+//else if (Object.keys(event.mentions).length == 1) {
+    //var mention = Object.keys(mentions)[0];
+//return api.sendMessage({body:`${mentions[mention].replace(/\@/g, "")}`}, threadID, messageID);
 
-const originalCredits = "";
-module.exports.run = async function({ api, event, args }) {
-  if (module.exports.config.credits !== originalCredits) {
-    return api.sendMessage("Nhìn Cái Lồn", event.threadID);
-  }
-  if (!args[0]) {
-    return api.sendMessage("❌ Vui lòng nhập UID của bạn.\nĐể lấy UID vui lòng dùng lệnh /uid để lấy uid của bạn hoặc /uid [@tag|link] để lấy uid của người khác", event.threadID);
-  }  
-  const ffId = args[0];
-  const apiUrl = `https://api.sumiproject.net/facebook/getinfov2?uid=${ffId}&apikey=apikeysumi`;
-  
-  try {
-    const response = await axios.get(apiUrl);
-    const data = response.data;
-    
-    if (data) {
-      const followersCount = data["subscribers"]["summary"]["total_count"];
-      const formattedFollowers = followersCount.toLocaleString('en-US');
-      
-      let resultMessage = "╭──────Facebook Info───────⭓\n";
-      resultMessage += "┌ 👤 Người Dùng\n";
-      resultMessage += `├ Tên: ${data["name"]}\n`;
-      resultMessage += `├ ID: ${data["id"]}\n`;
-      resultMessage += `├ Tên người dùng: ${data["username"]}\n`;
-      resultMessage += `├ Ngôn ngữ: ${data["locale"]}\n`;
-      resultMessage += `├ Đến từ: ${data["hometown"] ? data["hometown"]["name"] : "Không có"}\n`;
-      resultMessage += `├ Link FB: ${data["link"]}\n`;
-      resultMessage += `├ Cập nhật lần cuối: ${moment(data["updated_time"]).format('DD-MM-YYYY')}\n`;
-      resultMessage += `├ Ngày tạo tài khoản: ${moment(data["created_time"]).format('DD-MM-YYYY')}\n`;
-      resultMessage += `├ Người theo dõi: ${formattedFollowers}\n`;
-      resultMessage += `├ Giới thiệu: ${data["about"] ? data["about"] : "Không có"}\n`;
-      resultMessage += `├ Ngày sinh: ${data["birthday"] ? moment(data["birthday"], 'MM/DD/YYYY').format('DD/MM/YYYY') : "Không có"}\n`;
-      
-      let gender = data["gender"] ? data["gender"] : "Không có";
-      if (gender === "male") {
-        gender = "Nam";
-      } else if (gender === "female") {
-        gender = "Nữ";
-      }
-      resultMessage += `├ Giới tính: ${gender}\n`;
-      
-      resultMessage += `├ Tình trạng quan hệ: ${data["relationship_status"] ? data["relationship_status"] : "Không có"}\n`;
-      resultMessage += `├ Người quan trọng: ${data["significant_other"] ? data["significant_other"]["name"] : "Không có"}\n`;
-      resultMessage += `└─ Trích dẫn yêu thích: ${data["quotes"] ? data["quotes"] : "Không có"}\n\n`;
-
-      if (data["work"] && data["work"].length > 0) {
-        resultMessage += "┌ 💼 Công Việc\n";
-        data["work"].forEach((job, index) => {
-          resultMessage += `├ Công việc ${index + 1}:\n`;
-          resultMessage += `│ ├ Công ty: ${job["employer"]["name"]}\n`;
-          resultMessage += `│ ├ Vị trí: ${job["position"] ? job["position"]["name"] : "Không có"}\n`;
-          resultMessage += `│ ├ Địa điểm: ${job["location"] ? job["location"]["name"] : "Không có"}\n`;
-          resultMessage += `│ ├ Bắt đầu: ${moment(job["start_date"]).format('DD/MM/YYYY')}\n`;
-          resultMessage += `│ └ Mô tả: ${job["description"] ? job["description"] : "Không có"}\n`;
-        });
-        resultMessage += "╰─────────────⭓\n\n";
-      }
-
-      if (data["education"] && data["education"].length > 0) {
-        resultMessage += "┌ 🎓 Học Vấn\n";
-        data["education"].forEach((edu, index) => {
-          resultMessage += `├ Học vấn ${index + 1}:\n`;
-          resultMessage += `│ ├ Trường: ${edu["school"]["name"]}\n`;
-          resultMessage += `│ ├ Loại: ${edu["type"]}\n`;
-          resultMessage += `│ ├ Chuyên ngành: ${edu["concentration"] ? edu["concentration"].map(c => c.name).join(", ") : "Không có"}\n`;
-          resultMessage += `│ └ Năm: ${edu["year"] ? edu["year"]["name"] : "Không xác định"}\n`;
-        });
-        resultMessage += "╰─────────────⭓\n\n";
-      }
-      resultMessage += "┌ 🛡️ Quyền Riêng Tư\n";
-      resultMessage += `├ Nội dung: ${data["privacy"] && data["privacy"]["description"] ? data["privacy"]["description"] : "Công khai"}\n`;
-      resultMessage += `├ Ai có thể xem: ${data["privacy"] && data["privacy"]["value"] ? data["privacy"]["value"] : "Mọi người"}\n`;
-      resultMessage += `╰─────────────⭓`;
-
-      api.sendMessage(resultMessage, event.threadID);
-    } else {
-      api.sendMessage("Không tìm thấy thông tin hoặc có lỗi xảy ra.", event.threadID);
+    if (args[0] == "idu" || args[0] == "u") {
+return api.sendMessage(uid, event.threadID, event.messageID);
+}
+    if (args[0] == "idt" || args[0] == "t") {
+  api.sendMessage(`${event.threadID}`, event.threadID, event.messageID);
+}
+let linkfb = args[1]
+const res = await axios.get(`https://manhict.tech/finduid?url=${linkfb}&apikey=${key}`);
+var gidf = res.data.id;
+    if (args[0] == "getid" || args[0] == "g") {
+return api.sendMessage(`${gidf}`,event.threadID, event.messageID);
     }
-  } catch (error) {
-    console.error(error);
-    api.sendMessage("Có lỗi xảy ra khi lấy thông tin, có thể là do API bị lỗi.", event.threadID);
-  }
-};
+  //let linkvideo = args[1]
+//const res = await axios.get(`https://manhict.tech/fbvideo/v2?url=${linkvideo}&apikey=mzk_4D81TP718PBH77B5IVZ`);
+//var vieo = res.data.data.medias.url;
+ //if (args[0] == "getvideo" || args[0] == "v") {
+//return api.sendMessage(``,event.threadID, event.messageID);
+     // }
+}

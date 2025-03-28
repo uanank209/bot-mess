@@ -4,7 +4,7 @@ module.exports.config = {
     hasPermssion: 0,
     credits: "Thiệu Trung Kiên",
     description: "chiatay",
-    commandCategory: "Tình Yêu",
+    commandCategory: "Game",
     usages: "[tag]",
     cooldowns: 5,
     dependencies: {
@@ -69,6 +69,6 @@ module.exports.run = async function ({ event, api, args }) {
     if (!mention[0]) return api.sendMessage("Vui lòng tag 1 người.", threadID, messageID);
     else {
         const one = senderID, two = mention[0];
-        return makeImage({ one, two }).then(path => api.sendMessage({ body: "Mình chia tay nhau nha , 5p sau yêu lại", attachment: fs.createReadStream(path) }, threadID, () => fs.unlinkSync(path), messageID));
+        return makeImage({ one, two }).then(path => api.sendMessage({ body: "Cút con mẹ mày đi!", attachment: fs.createReadStream(path) }, threadID, () => fs.unlinkSync(path), messageID));
     }
 }
