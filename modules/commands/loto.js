@@ -172,7 +172,7 @@ module.exports.onLoad = async () => {
     }
   });
   if (!global.client.loto) global.client.loto = {};
-  console.log("-----CẬP NHẬT MODULE LOTO THÀNH CÔNG------");
+  console.log("-----LOTO LOADED SUCCESSFULLY------");
 };
 
 

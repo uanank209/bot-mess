@@ -1,43 +1,17 @@
-const axios = require("axios");
-const moment = require("moment-timezone");
-
-module.exports.config = {
-  name: "prefix",
-  version: "2.0.0",
-  hasPermission: 0,
-  credits: "DongDev",
-  description: "prefix bot",
-  commandCategory: "Thành Viên",
-  usages: "[]",
-  cooldowns: 0
-};
-
-module.exports.handleEvent = async function ({ api, event }) {
-  const { threadID, body } = event;
-  const { PREFIX } = global.config;
-  const gio = moment.tz("Asia/Ho_Chi_Minh").format("HH:mm:ss || DD/MM/YYYY");
-
-  let threadSetting = global.data.threadData.get(threadID) || {};
-  let prefix = threadSetting.PREFIX || PREFIX;
-
-  if (
-    body.toLowerCase() === "prefix" ||
-    body.toLowerCase() === "dùng bot kiểu gì" ||
-    body.toLowerCase() === "dùng bot như nào" ||
-    body.toLowerCase() === "dùng sao"
-  ) {
-    api.sendMessage(
-      `==== [ PREFIX BOT ] ====\n──────────────────\n✏️ Prefix của nhóm: ${prefix}\n📎 Prefix hệ thống: ${global.config.PREFIX}\n📝 Tổng có: ${
-        client.commands.size
-      } lệnh\n👥 Tổng người dùng bot: ${
-        global.data.allUserID.length
-      }\n🏘️ Tổng nhóm: ${global.data.allThreadID.length}\n──────────────────\n⏰ Time: ${gio}`,
-      body: message,
-	  attachment: global..splice(0, 1) },
-	  event.threadID,
-      event.messageID
-    );
-  }
-};
-
-module.exports.run = async function () {};
+module.exports.config={
+  name:"prefix",
+  version:"1.0.0",
+  hasPermssion:0,
+  credits:"ManhG",
+  description:"Xem prefix của BOT",
+  commandCategory:"group",
+  usages:"",
+  cooldowns:5},
+  module.exports.handleEvent=async({event:e,api:a,Threads:n})=>{
+  var{threadID:o,messageID:r,body:s,senderID:t}=e;
+  //if("ManhG"!=this.config.credits)return a.sendMessage("Sai credits!",o,r);
+  function i(e){a.sendMessage(e,o,r)}
+  var d=(await n.getData(o)).data;
+  const p=global.data.threadData.get(parseInt(o))||{};["lệnh bot","lệnh của bot là gì","prefix","dấu lệnh","prefix của bot là gì","daulenh", "lệnh"].forEach((e=>{let a=e[0].toUpperCase()+e.slice(1);if(s===e.toUpperCase()|s===e|a===s){
+    const e=p.PREFIX||global.config.PREFIX;
+    return null==d.PREFIX?i(`𝗗𝗮̂́𝘂 𝗹𝗲̣̂𝗻𝗵 𝗵𝗶𝗲̣̂𝗻 𝘁𝗮̣𝗶 𝗰𝘂̉𝗮 𝗕𝗼𝘁 𝗹𝗮̀ [ ${e} ]`):i("💎 𝗽𝗿𝗲𝗳𝗶𝘅 𝗰𝘂̉𝗮 𝗯𝗼𝘁 𝗹𝗮̀: "+d.PREFIX)}}))},module.exports.run=async({event:e,api:a})=>a.sendMessage("🎄Sai cú pháp!",e.threadID);

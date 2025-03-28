@@ -1,64 +1,70 @@
 module.exports.config = {
-  name: "money",
-  version: "1.0.0",
-  hasPermssion: 0,
-  credits: "",
-  description: "Kiểm tra tiền của bản thân, người khác hoặc tất cả thành viên trong nhóm",
-  commandCategory: "Kiếm Tiền",
-  usages: "money|money all",
-  cooldowns: 0,
-  usePrefix: false,
+	name: "money",
+	version: "0.0.1",
+	hasPermssion: 0,
+	credits: "Mirai Team",//mod by ARAXY XD
+	description: "Kiểm tra số tiền của bản thân hoặc người được tag",
+	commandCategory: "economy",
+	usages: "[Tag]",
+	cooldowns: 5
 };
 
-module.exports.run = async function ({ Currencies, api, event, Users }) {
-  const { threadID, senderID, mentions, type, messageReply, body } = event;
-  let targetID = senderID;
-  if (body.toLowerCase().includes("all")) {
-    try {
-      const threadInfo = await api.getThreadInfo(threadID);
-      const allMembers = threadInfo.participantIDs;
-      let message = `Số tiền của các thành viên trong nhóm :\n\n`;
-
-      let membersMoney = [];
-      for (const memberID of allMembers) {
-        const name = await Users.getNameUser(memberID);
-        const userData = await Currencies.getData(memberID);
-        const money = (userData && typeof userData.money !== 'undefined') ? userData.money : 0;
-        membersMoney.push({ name, money });
+module.exports.run = async function({ api, event, args, Currencies, Users }) {
+	const { threadID, messageID, senderID, mentions } = event;
+  const fs = require('fs');
+const axios = require('axios')
+ if(!fs.existsSync(__dirname+'/cache/SplineSans-Medium.ttf')) { 
+      let getfont = (await axios.get(`https://drive.google.com/u/0/uc?id=102B8O3_0vTn_zla13wzSzMa-vdTZOCmp&export=download`, { responseType: "arraybuffer" })).data;
+       fs.writeFileSync(__dirname+"/cache/SplineSans-Medium.ttf", Buffer.from(getfont, "utf-8"));
+    };
+    if(!fs.existsSync(__dirname+'/cache/SplineSans.ttf')) { 
+      let getfont2 = (await axios.get(`https://drive.google.com/u/0/uc?id=1--V7DANKLsUx57zg8nLD4b5aiPfHcmwD&export=download`, { responseType: "arraybuffer" })).data;
+       fs.writeFileSync(__dirname+"/cache/SplineSans.ttf", Buffer.from(getfont2, "utf-8"));
+    };
+if (event.type == "message_reply") {
+    var uid = event.messageReply.senderID;
+    var name = (await Users.getData(uid)).name;
+    var money = (await Currencies.getData(uid)).money;
+    if (!money) money = 0;
+var argss = `${money}`;
+}
+else if (Object.keys(event.mentions).length == 1) {
+		var mention = Object.keys(mentions)[0];
+		var money = (await Currencies.getData(mention)).money;
+		if (!money) money = 0;
+	  var argss = `${money}`;
+    var name = (await Users.getData(mention)).name
+	} else {
+   var name = (await Users.getData(senderID)).name;
+    var money = (await Currencies.getData(senderID)).money;
+    if (!money) money = 0;
+var argss = `${money}`;
+  }
+	 const { loadImage, createCanvas } = require("canvas");
+    let path = __dirname + "/cache/atmaraxy.png";
+    let bg = (await axios.get(`https://imgur.com/wrS74gQ.jpg`, {responseType: "arraybuffer" })).data;
+    fs.writeFileSync(path, Buffer.from(bg, "utf-8"));
+           let bgBase = await loadImage(path);
+    let canvas = createCanvas(bgBase.width, bgBase.height);
+    let ctx = canvas.getContext("2d");
+    const Canvas = global.nodemodule["canvas"];
+    ctx.drawImage(bgBase, 0, 0, canvas.width, canvas.height);
+    Canvas.registerFont(__dirname+`/cache/SplineSans-Medium.ttf`, {
+        family: "SplineSans-Medium"
+    });
+    Canvas.registerFont(__dirname+`/cache/SplineSans.ttf`, {
+        family: "SplineSans"
+    });
+    ctx.font = "50px SplineSans-Medium";
+    ctx.fillStyle = "#000000";
+    ctx.textAlign = "center";
+    ctx.fillText('' + argss.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' Đô', 530, 359);
+    const imageBuffer = canvas.toBuffer();
+    fs.writeFileSync(path, imageBuffer);
+       var msg =  {body: `𝗦𝗼̂́ 𝘁𝗶𝗲̂̀𝗻 𝗰𝗼̀𝗻 𝗹𝗮̣𝗶 𝗰𝘂̉𝗮 ${name} 𝗹𝗮̀: `, attachment: fs.createReadStream(path)
+}
+   return api.sendMessage(msg,  threadID, async (error, info) => {
+    fs.unlinkSync(path),
+        messageID
+      })
       }
-      membersMoney.sort((a, b) => b.money - a.money);
-      for (const member of membersMoney) {
-        if (member.money === Infinity) {
-          message += `- ${member.name} có vô hạn tiền\n`;
-        } else {
-          message += `- ${member.name} có ${member.money} VND\n`;
-        }
-      }
-      return api.sendMessage(message, threadID);
-    } catch (e) {
-      console.log(`Lỗi khi truy xuất tiền của tất cả thành viên:`, e);
-      return api.sendMessage("Đã có lỗi xảy ra khi lấy thông tin nhóm. Vui lòng thử lại sau.", threadID);
-    }
-  }
-  if (type === 'message_reply' && messageReply.senderID) {
-    targetID = messageReply.senderID;
-  } else if (Object.keys(mentions).length > 0) {
-    targetID = Object.keys(mentions)[0];
-  }
-
-  const name = await Users.getNameUser(targetID);
-  try {
-    const userData = await Currencies.getData(targetID);
-    if (!userData || typeof userData.money === 'undefined') {
-      return api.sendMessage(`- ${name} có 0 VND`, threadID);
-    }
-    const money = userData.money;
-    if (money === Infinity) {
-      return api.sendMessage(`- ${name} có vô hạn tiền`, threadID);
-    }
-    return api.sendMessage({ body: `- ${name} có ${money} VND` }, threadID);
-  } catch (e) {
-    console.log(`Lỗi khi truy xuất tiền của người dùng ${targetID}:`, e);
-    return api.sendMessage("Đã có lỗi xảy ra. Vui lòng thử lại sau.", threadID);
-  }
-};

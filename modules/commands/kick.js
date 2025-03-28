@@ -4,7 +4,7 @@ module.exports.config = {
     hasPermssion: 1,
     credits: "D-Jukie",
     description: "Xoá người bạn cần xoá khỏi nhóm bằng cách tag hoặc reply",
-    commandCategory: "Quản Trị Viên",
+    commandCategory: "Nhóm",
     usages: "[tag/reply/all]",
     cooldowns: 0
 };
@@ -46,6 +46,6 @@ module.exports.run = async function ({
             }
         }
     } catch {
-        return api.sendMessage('Bot cần quyền quản trị viên để kick bạn nhé', event.threadID, event.messageID);
+        return api.sendMessage('ccc', event.threadID, event.messageID);
     }
 }

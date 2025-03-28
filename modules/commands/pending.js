@@ -1,154 +1,83 @@
 module.exports.config = {
-    name: "pending",
-    version: "1.0.6",
-    credits: "Niiozic",
-    hasPermssion: 3,
-    description: "Quản lý tin nhắn chờ của bot",
-    commandCategory: "Admin",
-    usages: "[u] [t] [a]",
-    cooldowns: 5
+	name: "pending",
+	version: "1.0.5",
+	credits: "Mirai Team",
+	hasPermssion: 2,
+	description: "Quản lý tin nhắn chờ của bot",
+	commandCategory: "Tiện ích",
+	cooldowns: 5
 };
 
-module.exports.handleReply = async function({ api, event, handleReply, getText }) {
-    const axios = require("axios");
-    const fs = require('fs-extra');
-    const request = require('request');
-    if (String(event.senderID) !== String(handleReply.author)) return;
-    const { body, threadID, messageID } = event;
-    var count = 0;
-;
-    if (body.toLowerCase() === "all") {
-        for (const singleIndex in handleReply.pending) {
-            api.changeNickname(`[ ${global.config.PREFIX} ] • ${(!global.config.BOTNAME) ? "✅" : global.config.BOTNAME}`, handleReply.pending[singleIndex].threadID, api.getCurrentUserID());
-            api.sendMessage("", event.threadID, () => api.sendMessage(`❯ Bạn đã được duyệt bot bởi Admin: fb.com/`, handleReply.pending[singleIndex].threadID));
-            count += 1;
-        }
-        return api.sendMessage(`[ PENDING ] - Đã phê duyệt tất cả thành công`, threadID, messageID);
-    } else if (isNaN(body) && (body.indexOf("c") == 0 || body.indexOf("cancel") == 0)) {
-        const index = (body.slice(1, body.length)).split(/\s+/);
-        for (const singleIndex of index) {
-            if (isNaN(singleIndex) || singleIndex <= 0 || singleIndex > handleReply.pending.length) 
-                return api.sendMessage(`→ ${singleIndex} Không phải là một con số hợp lệ`, threadID, messageID);
-        }
-        return api.sendMessage(`[ PENDING ] - Đã từ chối thành công`, threadID, messageID);
-    } else {
-        const index = body.split(/\s+/);
-        for (const singleIndex of index) {
-            if (isNaN(singleIndex) || singleIndex <= 0 || singleIndex > handleReply.pending.length) 
-                return api.sendMessage(`→ ${singleIndex} Không phải là một con số hợp lệ`, threadID, messageID);
-            
-            api.changeNickname(`[ ${global.config.PREFIX} ] • ${(!global.config.BOTNAME) ? "🟩" : global.config.BOTNAME}`, handleReply.pending[singleIndex - 1].threadID, api.getCurrentUserID());
-            api.sendMessage("", event.threadID, () => api.sendMessage(`❯ Admin: `, handleReply.pending[singleIndex - 1].threadID));
-            count += 1
-        }
-        return api.sendMessage(`[ PENDING ] - Đã phê duyệt thành công`, threadID, messageID);
+module.exports.languages = {
+    "vi": {
+        "invaildNumber": "%1 không phải là một con số hợp lệ",
+        "cancelSuccess": "Đã từ chối thành công %1 nhóm!",
+        "notiBox": "Box của bạn đã được admin phê duyệt để có thể sử dụng bot",
+        "approveSuccess": "Đã phê duyệt thành công %1 nhóm!",
+
+        "cantGetPendingList": "Không thể lấy danh sách các nhóm đang chờ!",
+        "returnListPending": "「PENDING」❮ Tổng số nhóm cần duyệt: %1 nhóm ❯\n\n%2",
+        "returnListClean": "「PENDING」Hiện tại không có nhóm nào trong hàng chờ"
+    },
+    "en": {
+        "invaildNumber": "%1 is not an invalid number",
+        "cancelSuccess": "Refused %1 thread!",
+        "notiBox": "Your box has been approved to use bot",
+        "approveSuccess": "Approved successfully %1 threads!",
+
+        "cantGetPendingList": "Can't get the pending list!",
+        "returnListPending": "»「PENDING」«❮ The whole number of threads to approve is: %1 thread ❯\n\n%2",
+        "returnListClean": "「PENDING」There is no thread in the pending list"
     }
 }
 
+module.exports.handleReply = async function({ api, event, handleReply, getText }) {
+    if (String(event.senderID) !== String(handleReply.author)) return;
+    const { body, threadID, messageID } = event;
+    var count = 0;
 
-module.exports.run = async function({ api, event, args, permission, handleReply }) {
-    if (args.join() == "") {
-        return api.sendMessage("❯ Pending user: Hàng chờ người dùng\n❯ Pending thread: Hàng chờ nhóm\n❯ Pending all: Tất cả box đang chờ duyệt", event.threadID, event.messageID);
+    if (isNaN(body) && body.indexOf("c") == 0 || body.indexOf("cancel") == 0) {
+        const index = (body.slice(1, body.length)).split(/\s+/);
+        for (const singleIndex of index) {
+            console.log(singleIndex);
+            if (isNaN(singleIndex) || singleIndex <= 0 || singleIndex > handleReply.pending.length) return api.sendMessage(getText("invaildNumber", singleIndex), threadID, messageID);
+            api.removeUserFromGroup(api.getCurrentUserID(), handleReply.pending[singleIndex - 1].threadID);
+            count+=1;
+        }
+        return api.sendMessage(getText("cancelSuccess", count), threadID, messageID);
     }
-    const content = args.slice(1, args.length);
-    switch (args[0]) {
-        case "user":
-        case "u":
-        case "-u":
-        case "User": {
-            const { threadID, messageID } = event;
-            const commandName = this.config.name;
-            var msg = "", index = 1;
-
-            try {
-                var spam = await api.getThreadList(100, null, ["OTHER"]) || [];
-                var pending = await api.getThreadList(100, null, ["PENDING"]) || [];
-            } catch (e) {
-                return api.sendMessage("[ PENDING ] - Không thể lấy danh sách chờ", threadID, messageID);
-            }
-
-            const list = [...spam, ...pending].filter(group => group.isGroup == false);
-
-            for (const single of list) msg += `${index++}. ${single.name}\n${single.threadID}\n`;
-
-            if (list.length != 0) {
-                return api.sendMessage(`→ Tổng số người dùng cần duyệt: ${list.length} người dùng\n${msg}\nReply (phản hồi) theo stt để duyệt`, threadID, (error, info) => {
-                    global.client.handleReply.push({
-                        name: commandName,
-                        messageID: info.messageID,
-                        author: event.senderID,
-                        pending: list
-                    });
-                }, messageID);
-            } else {
-                return api.sendMessage("[ PENDING ] - Hiện tại không có người dùng nào trong hàng chờ", threadID, messageID);
-            }
+    else {
+        const index = body.split(/\s+/);
+        for (const singleIndex of index) {
+            if (isNaN(singleIndex) || singleIndex <= 0 || singleIndex > handleReply.pending.length) return api.sendMessage(getText("invaildNumber", singleIndex), threadID, messageID);
+            api.sendMessage(getText("notiBox"), handleReply.pending[singleIndex - 1].threadID);
+            count+=1;
         }
-        case "thread":
-        case "-t":
-        case "t":
-        case "Thread": {
-            const { threadID, messageID } = event;
-            const commandName = this.config.name;
-            var msg = "", index = 1;
-
-            try {
-                var spam = await api.getThreadList(100, null, ["OTHER"]) || [];
-                var pending = await api.getThreadList(100, null, ["PENDING"]) || [];
-            } catch (e) {
-                return api.sendMessage("[ PENDING ] - Không thể lấy danh sách đang chờ", threadID, messageID);
-            }
-
-            const list = [...spam, ...pending].filter(group => group.isSubscribed && group.isGroup);
-
-            for (const single of list) msg += `${index++}. ${single.name}\n${single.threadID}\n`;
-
-            if (list.length != 0) {
-                return api.sendMessage(`→ Tổng số nhóm cần duyệt: ${list.length} nhóm\n${msg}\nReply (phản hồi) theo stt để duyệt`, threadID, (error, info) => {
-                    global.client.handleReply.push({
-                        name: commandName,
-                        messageID: info.messageID,
-                        author: event.senderID,
-                        pending: list
-                    });
-                }, messageID);
-            } else {
-                return api.sendMessage("[ PENDING ] - Hiện tại không có nhóm nào trong hàng chờ", threadID, messageID);
-            }
-        }
-        case "all":
-        case "a":
-        case "-a":
-        case "al": {
-            const { threadID, messageID } = event;
-            const commandName = this.config.name;
-            var msg = "", index = 1;
-
-            try {
-                var spam = await api.getThreadList(100, null, ["OTHER"]) || [];
-                var pending = await api.getThreadList(100, null, ["PENDING"]) || [];
-            } catch (e) {
-                return api.sendMessage("[ PENDING ] - Không thể lấy danh sách chờ", threadID, messageID);
-            }
-
-            const listThread = [...spam, ...pending].filter(group => group.isSubscribed && group.isGroup);
-            const listUser = [...spam, ...pending].filter(group => group.isGroup == false);
-            const list = [...spam, ...pending].filter(group => group.isSubscribed);
-
-            for (const single of list) msg += `${index++}. ${single.name}\n${single.threadID}\n`;
-
-            if (list.length != 0) {
-                return api.sendMessage(`→ Tổng số User & Thread cần duyệt: ${list.length} User & Thread\n${msg}\nReply (phản hồi) theo stt để duyệt hoặc reply 'all' để duyệt tất cả`, threadID, (error, info) => {
-                    global.client.handleReply.push({
-                        name: commandName,
-                        messageID: info.messageID,
-                        author: event.senderID,
-                        pending: list
-                    });
-                }, messageID);
-            } else {
-                return api.sendMessage("[ PENDING ] - Hiện tại không có User & Thread nào trong hàng chờ", threadID, messageID);
-            }
-        }
+        return api.sendMessage(getText("approveSuccess", count), threadID, messageID);
     }
+}
+
+module.exports.run = async function({ api, event, getText }) {
+	const { threadID, messageID } = event;
+    const commandName = this.config.name;
+    var msg = "", index = 1;
+
+    try {
+		var spam = await api.getThreadList(100, null, ["OTHER"]) || [];
+		var pending = await api.getThreadList(100, null, ["PENDING"]) || [];
+	} catch (e) { return api.sendMessage(getText("cantGetPendingList"), threadID, messageID) }
+
+	const list = [...spam, ...pending].filter(group => group.isSubscribed && group.isGroup);
+
+    for (const single of list) msg += `${index++}/ ${single.name}(${single.threadID})\n`;
+
+    if (list.length != 0) return api.sendMessage(getText("returnListPending", list.length, msg), threadID, (error, info) => {
+		global.client.handleReply.push({
+            name: commandName,
+            messageID: info.messageID,
+            author: event.senderID,
+            pending: list
+        })
+	}, messageID);
+    else return api.sendMessage(getText("returnListClean"), threadID, messageID);
 }
