@@ -1,78 +1,34 @@
 module.exports.config = {
     name: "taglientuc",
     version: "1.0.0",
-    hasPermssion: 2,
-    credits: "Ntkhang",
+    hasPermssion: 1,
+    credits: "VanHung & Dựa trên demo của NTKhang",
     description: "Tag liên tục người bạn tag trong 5 lần\nCó thể gọi là gọi hồn người đó",
-    commandCategory: "War",
-    usages: "taglientuc @tag [số lần] [delay] hoặc stop all",
-    cooldowns: 5,
+    commandCategory: "group",
+    usages: "taglientuc @mention",
+    cooldowns: 90,
     dependencies: {
         "fs-extra": "",
         "axios": ""
     }
 }
 
-module.exports.run = async function({ api, args, Users, event }) {
-  function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-  const { mentions, threadID, messageID } = event;
-  function reply(body) {
-    api.sendMessage(body, threadID, messageID);
-  }
-  if (!global.client.modulesTaglientuc) global.client.modulesTaglientuc = [];
-  const dataTaglientuc = global.client.modulesTaglientuc;
-  if (!dataTaglientuc.some(item => item.threadID == threadID)) dataTaglientuc.push({ threadID, targetID: []});
-  const thisTaglientuc = dataTaglientuc.find(item => item.threadID == threadID);
-  if (args[0] == "stop") {
-    if (args[1] == "all") {
-      thisTaglientuc.targetID = [];
-      return reply("✅ Đã tắt tag liên tục tất cả");
-    }
-    else {
-      if (Object.keys(mentions).length == 0) return reply("❎ Hãy tag người bạn muốn dừng tag");
-			let msg = "";
-      for (let id in mentions) {
-        
-        const userName = mentions[id].replace("@", "");
-        if (!thisTaglientuc.targetID.includes(id)) msg += `\n${userName} hiện tại không bị tag`;
-        else {
-          thisTaglientuc.targetID.splice(thisTaglientuc.targetID.findIndex(item => item == id, 1));
-          msg += `✅ Đã tắt tag liên tục: ${userName}`;
-        }
-      }
-      return reply(msg);
-    }
-  }
-  else {
-		let solantag = args[args.length - 2];
-    let time = args[args.length - 1];
-                  // Check syntax
-    if (Object.keys(mentions) == 0) return reply("❎ Vui lòng tag người bạn muốn gọi hồn");
-    if (!solantag || !time) return global.utils.throwError(this.config.name, threadID, messageID);
-    if (isNaN(solantag)) return reply("❎ Số lần tag phải là một con số");
-    if (isNaN(time)) return reply("❎ Thời gian giữa mỗi lần tag phải là một con số");
-    time = time*1000;
-    const target = Object.keys(mentions)[0];
-    if (thisTaglientuc.targetID.includes(target)) return reply("❎ Người này đang được gọi hồn");
-    thisTaglientuc.targetID.push(target);
-    reply(`✅ Đã thêm ${mentions[target].replace("@", "")} vào danh sách tag liên tục\n🔄 Số lần tag là: ${solantag}\n⏰ Thời gian giữa các lần tag là ${time/1000} giây`);
-    const noidungtag = args.slice(0, args.length - 2).join(" ").replace("@", "");
-    
-    let i = 0;
-    while (true) {
-      await delay(time);
-      if (i == solantag) {
-				thisTaglientuc.targetID.splice(thisTaglientuc.targetID.findIndex(item => item == target, 1));
-				break;
-			}
-      if (!global.client.modulesTaglientuc.find(item => item.threadID == threadID).targetID.includes(target)) break;
-      await api.sendMessage({
-        body: noidungtag,
-        mentions: [{ id: target, tag: noidungtag }]
-      }, threadID);
-      i++;
-    }
-  }
-};
+module.exports.run = async function({ api, args, Users, event}) {
+    var mention = Object.keys(event.mentions)[0];
+    if(!mention) return api.sendMessage("𝐂𝐚̂̀𝐧 𝐩𝐡𝐚̉𝐢 𝐭𝐚𝐠 𝟏 𝐧𝐠𝐮̛𝐨̛̀𝐢 𝐛𝐚̣𝐧 𝐦𝐮𝐨̂́𝐧 𝐠𝐨̣𝐢 𝐡𝐨̂̀𝐧", event.threadID);
+    let name =  event.mentions[mention];
+    var arraytag = [];
+        arraytag.push({id: mention, tag: name});
+    var a = function (a) { api.sendMessage(a, event.threadID); }
+a("𝐇𝐢́𝐭 𝐇𝐚̀, 𝐇𝐢́𝐭 𝐇𝐚̀!");
+setTimeout(() => {a({body: "𝐑𝐚 𝐂𝐡𝐨̛𝐢 𝐄𝐦 𝐎̛𝐢" + " " + name, mentions: arraytag})} , 3000);
+setTimeout(() => {a({body: "𝐑𝐚 𝐂𝐡𝐨̛𝐢 𝐄𝐦 𝐎̛𝐢" + " " + name, mentions: arraytag})} , 4000);
+setTimeout(() => {a({body: "𝐑𝐚 𝐂𝐡𝐨̛𝐢 𝐄𝐦 𝐎̛𝐢" + " " + name, mentions: arraytag})} , 5000);
+setTimeout(() => {a({body: "𝐑𝐚 𝐂𝐡𝐨̛𝐢 𝐄𝐦 𝐎̛𝐢" + " " + name, mentions: arraytag})} , 6000);
+setTimeout(() => {a({body: "𝐑𝐚 𝐂𝐡𝐨̛𝐢 𝐄𝐦 𝐎̛𝐢" + " " + name, mentions: arraytag})} , 6500);
+setTimeout(() => {a({body: "𝐑𝐚 𝐂𝐡𝐨̛𝐢 𝐄𝐦 𝐎̛𝐢" + " " + name, mentions: arraytag})} , 7000);
+setTimeout(() => {a({body: "𝐑𝐚 𝐂𝐡𝐨̛𝐢 𝐄𝐦 𝐎̛𝐢" + " " + name, mentions: arraytag})} , 7500);
+setTimeout(() => {a({body: "𝐑𝐚 𝐂𝐡𝐨̛𝐢 𝐄𝐦 𝐎̛𝐢" + " " + name, mentions: arraytag})} , 8000);
+setTimeout(() => {a({body: "𝐑𝐚 𝐂𝐡𝐨̛𝐢 𝐄𝐦 𝐎̛𝐢" + " " + name, mentions: arraytag})} , 8500);
+setTimeout(() => {a({body: "𝐑𝐚 𝐂𝐡𝐨̛𝐢 𝐄𝐦 𝐎̛𝐢" + " " + name, mentions: arraytag})} , 9000);
+ }

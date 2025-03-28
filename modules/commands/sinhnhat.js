@@ -1,76 +1,63 @@
 module.exports.config = {
-	name: "sinhnhat",
-	version: "1.0",
-	hasPermssion: 0,
-	credits: "Jukie",
-	description: "Đếm thời gian",
-	commandCategory: "Thành Viên",
-	cooldowns: 5
+    name: "sinhnhat",
+    version: "1.0.0",
+    hasPermssion: 0,
+    credits: "Cherry",
+    description: "Xem hôm nay là sinh nhật của ai trong box?",
+    commandCategory: "group",
+    usages: "Hôm nay sinh nhật ai?",
+    cooldowns: 10
+};
+
+const sinhnhatPath = __dirname + '/cache/sinhnhat.json';
+const fs = require('fs');
+
+module.exports.onLoad = () => {
+  if (!fs.existsSync(sinhnhatPath)) fs.writeFileSync(sinhnhatPath, JSON.stringify({}));
 }
 
-module.exports.run = async ({ event, api, args })  => {
-	const { commands } = global.client;
-	const { threadID, messageID, body } = event;
-    const threadSetting = global.data.threadData.get(parseInt(event.threadID)) || {};
-    const prefix = (threadSetting.hasOwnProperty("PREFIX")) ? threadSetting.PREFIX : global.config.PREFIX;
-if (!args[0] || args[0].length > 8 || args[0].length < 7) {
-			api.sendMessage(`Hướng dẫn sử dụng\n→ ${prefix}${this.config.name} sinhnhat [năm-tháng-ngày]\n→ ${prefix}${this.config.name} ngayyeu [năm-tháng-ngày]\n→ ${prefix}${this.config.name} thoigian [năm-tháng-ngày] [năm-tháng-ngày]`, event.threadID, event.messageID);
-		}
-		else {
-	if (args[0] == 'sinhnhat') {
-		if (!args[1] || args[1].length > 10 ) {
-		return api.sendMessage(`→ Vui lòng nhập theo định dạng: ${prefix}${this.config.name} ${args[0]} [năm-tháng-ngày]`, event.threadID, event.messageID);	
-		}
-		else {
 
-
-			const ngay = args[1];
-    		const t = Date.parse(ngay) - Date.parse(new Date()) ;
-    		const seconds = Math.floor( (t/1000) % 60 );
-    		const minutes = Math.floor( (t/1000/60) % 60 );
-    		const hours = Math.floor( (t/(1000*60*60)) % 24 );
-    		const days = Math.floor( t/(1000*60*60*24) );
-    		return api.sendMessage(`→ Thời gian tới sinh nhật của bạn là: ${days} ngày ${hours} tiếng ${minutes} phút ${seconds} giây`, event.threadID, event.messageID);
-}
-}
-		else {
-	if (args[0] == 'thoigian') {
-		if (!args[1] || args[1].length > 10 ) {
-		return api.sendMessage(`→ Vui lòng nhập theo định dạng: ${prefix}${this.config.name} ${args[0]} [năm-tháng-ngày] [năm-tháng-ngày]`, event.threadID, event.messageID);	
-		}
-		else {
-			const timestart = args[1];
-		if (!args[2] || args[2].length > 10 ) {
-		return api.sendMessage(`→ Vui lòng nhập theo định dạng: ${prefix}${this.config.name} ${args[0]} [năm-tháng-ngày] [năm-tháng-ngày]`, event.threadID, event.messageID);	
-		}
-		else {	
-			const timeend = args[2];
-    		const t = Date.parse(timeend) - Date.parse(timestart)
-    		const seconds = Math.floor( (t/1000) % 60 );
-    		const minutes = Math.floor( (t/1000/60) % 60 );
-    		const hours = Math.floor( (t/(1000*60*60)) % 24 );
-    		const days = Math.floor( t/(1000*60*60*24) );
-    		return api.sendMessage(`→ Thời gian được tính toán là: ${days} ngày`, event.threadID, event.messageID);
-}
-}
-}
-		else {
-			if (args[0] == 'ngayyeu') {
-			if (!args[1] || args[1].length > 10 ) {
-			return api.sendMessage(`→ Vui lòng nhập theo định dạng: ${prefix}${this.config.name} ${args[0]} [năm-tháng-ngày]`, event.threadID, event.messageID);	
-		}
-		else {
-			const ngay = args[1];
-    		const t = Date.parse(new Date()) - Date.parse(ngay)
-    		const seconds = Math.floor( (t/1000) % 60 );
-    		const minutes = Math.floor( (t/1000/60) % 60 );
-    		const hours = Math.floor( (t/(1000*60*60)) % 24 );
-    		const days = Math.floor( t/(1000*60*60*24) );
-    		return api.sendMessage(`→ Tổng thời gian đã yêu nhau của bạn là: ${days} ngày ${hours} tiếng ${minutes} phút ${seconds} giây`, event.threadID, event.messageID);
-			}
-		}
-		}
-		}
-	}
+module.exports.handleEvent = async function({ event, api }) {
+    var { threadID, senderID } = event;
+    let sinhnhatData = JSON.parse(fs.readFileSync(sinhnhatPath));
+    if (!(senderID in sinhnhatData)) sinhnhatData[senderID] = { happyBirthday: false, time: Date.now() };
+  if (sinhnhatData[senderID].happyBirthday && (Date.now() - sinhnhatData[senderID] > 31556952000)) sinhnhatData[senderID].happyBirthday = false;
+    var userInfo = (await api.getUserInfo(senderID))[senderID] || "";
+    if (!userInfo || userInfo.isBirthday == false || userInfo.isBirthday == true && sinhnhatData[senderID].happyBirthday == true) return;
+    else {
+        var msg = `🎂🎉🎊Chúc mừng sinh nhật ${userInfo.name} 🎊🎉🎂\n\nChúc em hạnh phúc đậm đà tình yêu 💏\nChúc em sức khỏe thật nhiều 💪\nChúc em may mắn vạn điều bình an 🍀\n\n`;
+        userInfo.gender == "Nam" ? msg += `Chúc em ngày một giàu sang\nTrăm ngàn hạnh phúc, kho tàng tình yêu\nCuối thơ chúc nốt một điều\nChúc em may mắn, sớm chiều thành công🥰` : msg += `Chúc em ngày một giàu sang\nNiềm vui hạnh phúc càng ngày càng xinh\nChúc em êm ấm gia đình\nTuổi này kiếm được phúc tinh cuộc đời 😘`;
+        sinhnhatData[senderID] = {
+          happyBirthday: true,
+          time: Date.now()
+        };
+    fs.writeFileSync(sinhnhatPath, JSON.stringify(sinhnhatData, null, 4));
+        var tag = {
+            tag: userInfo.name,
+            id: senderID
+        }
+        api.sendMessage({ body: msg, mentions: tag}, threadID);
+    }
+    return;
 }
 
+module.exports.run = async function({ api, event, Users, Threads }) {
+    var { threadID } = event;
+    var threadData = await api.getThreadInfo(threadID) || "", tag = [], msg = "Hôm nay là ngày sinh nhật của:\n\n", birthday = "", num = 0;
+    if (!threadData) return api.sendMessage("Thiếu dữ kiện để thực thi lệnh này.", threadID);
+    var members = threadData.userInfo;
+  // api.sendMessage(JSON.stringify(members, null, 4), threadID);
+    for (var i of members) {
+        if (i.isBirthday == false) continue;
+        if (i.isBirthday == true) {
+            num++;
+            birthday += `${num}. ${i.name}\n`
+            tag.push({
+                tag: i.name,
+                id: i.id
+            });
+        }
+    }
+    birthday ? msg += `${birthday}\nMọi người tới chúc mừng sinh nhật cho ${tag.length < 2 ? "bạn ấy" : "các bạn ấy"} nào.` : msg = "Hôm nay không là ngày sinh nhật của thành viên nào cả."
+    return tag.length > 0 ? api.sendMessage({ body: msg, mentions: tag }, threadID) : api.sendMessage(msg, threadID);
+}

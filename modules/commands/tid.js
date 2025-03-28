@@ -1,10 +1,11 @@
 module.exports.config = {
-	name: "tid",	version: "1.0.0", 
+	name: "tid",
+	version: "1.0.0", 
 	hasPermssion: 0,
 	credits: "NTKhang",
 	description: "Lấy id box", 
-	commandCategory: "Thành Viên",
-	usages: "tid",
+	commandCategory: "box",
+	usages: "uidbox",
 	cooldowns: 5, 
 	dependencies: '',
 };

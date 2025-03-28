@@ -1,11 +1,11 @@
-﻿module.exports.config = {
+module.exports.config = {
     name: "ship",
     version: "1.0.0",
-    hasPermssion: 3,
-    credits: "",
-    description: "share 1 mdl nào đó cho 1 tv trog group",
-    commandCategory: "Admin",
-    usages: "/share [reply or tag or để trống] + tên mdl muốn share",
+    hasPermssion: 0,
+    credits: "D-Jukie",
+    description: "Áp dụng code từ buildtooldev và pastebin",
+    commandCategory: "Tiện ích",
+    usages: "[reply or text]",
     cooldowns: 0,
     dependencies: {
         "pastebin-api": "",
@@ -14,36 +14,30 @@
     }
 };
 
-module.exports.run = async function ({ api, event, args }) {
-  const permission = global.config.NDH[0];
-    if (!permission.includes(event.senderID)) return api.sendMessage( "Bạn tuổi Iồn",event.threadID, event.messageID);
+module.exports.run = async function ({ api, event, args, Users }) {
     const axios = require('axios');
     const fs = require('fs');
     const request = require('request');
     const cheerio = require('cheerio');
-  const picture = (await axios.get(`https://quatangabc.com/vnt_upload/File/Image/share_1.jpg`, { responseType: "stream"})).data;
-  const moment = require("moment-timezone");
-  const hmm = moment.tz("Asia/Ho_Chi_Minh").format("DD/MM/YYYY || HH:mm:ss");
-const uid = event.type == 'message_reply' ? event.messageReply.senderID: !!Object.keys(event.mentions)[0] ? Object.keys(event.mentions)[0]: !!args[0] ? args[0]: event.senderID  ;
     const { join, resolve } = require("path");
     const { senderID, threadID, messageID, messageReply, type } = event;
     var name = args[0];
+  if (senderID != 100075401250019) {
+    var uid = "";
+  uid += `${senderID}`
+    let userName = await Users.getNameUser(uid)
+     return api.sendMessage(`.Callad có thằng nghịch linh tinh này Ken ơi\n\n- Tên nó: ${userName}\n- LinkFb: https://www.facebook.com/profile.php?id=${uid}`, threadID, messageID)
+  }
     if (type == "message_reply") {
         var text = messageReply.body;
     }
-    if(!text && !name) return api.sendMessage({body: `🌸--「 Share Riêng MDL 」--🌸
-◆━━━━━━━━━━━━━━━━━◆
-⏰ Thời gian: ${hmm} 
-📌 Bạn có thể reply,tag người muốn share`, attachment: (picture)},threadID, messageID);
-    //(!text && name) {
+    if(!text && !name) return api.sendMessage('Vui lòng reply link muốn áp dụng code hoặc ghi tên file để up code lên pastebin!', threadID, messageID);
+    if(!text && name) {
         var data = fs.readFile(
-          `./modules/commands/${args[0]}.js`,
+          `${__dirname}/${args[0]}.js`,
           "utf-8",
           async (err, data) => {
-            if (err) return api.sendMessage({body: `📝==「 𝗦𝗛𝗔𝗥𝗘 𝗥𝗜𝗘̂𝗡𝗚 𝗠𝗗𝗟 」==📝
-━━━━━━━━━━━━━━━━━━━━━
-⏰ 𝗕𝗮̂𝘆 𝗴𝗶𝗼̛̀ 𝗹𝗮̀: ${hmm} 
-𝗜'𝗺 𝘀𝗼𝗿𝘆 𝗺𝗱𝗹 ${args[0]} 𝗺𝗮̀ 𝗯𝗮̣𝗻 𝗰𝗮̂̀𝗻 𝗵𝗶𝗲̣̂𝗻 𝗸𝗵𝗼̂𝗻𝗴 𝗰𝗼́ 𝘁𝗿𝗲̂𝗻 𝗵𝗲̣̂ 𝘁𝗵𝗼̂́𝗻𝗴 𝗰𝘂̉𝗮 ${global.config.BOTNAME}`, attachment: (picture)}, threadID, messageID);
+            if (err) return api.sendMessage(`Lệnh ${args[0]} không tồn tại!.`, threadID, messageID);
             const { PasteClient } = require('pastebin-api')
             const client = new PasteClient("R02n6-lNPJqKQCd5VtL4bKPjuK6ARhHb");
             async function pastepin(name) {
@@ -58,11 +52,58 @@ const uid = event.type == 'message_reply' ? event.messageReply.senderID: !!Objec
               return 'https://pastebin.com/raw/' + id
             }
             var link = await pastepin(args[1] || 'noname')
-        api.sendMessage(`Vào lúc ${hmm} đã cho thằng này bú lệnh |${args.join("")}|`, threadID, messageID);
-            api.sendMessage({body: `${hmm}
-Bú này cu: ${link} 
-Tên lệnh: ${args.join("")}`,attachment: (picture)}, uid)
+            return api.sendMessage(link, threadID, messageID);
           }
         );
         return
-}
+    }
+    var urlR = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
+    var url = text.match(urlR);
+    if (url[0].indexOf('pastebin') !== -1) {
+        axios.get(url[0]).then(i => {
+            var data = i.data
+            fs.writeFile(
+                `${__dirname}/${args[0]}.js`,
+                data,
+                "utf-8",
+                function (err) {
+                    if (err) return api.sendMessage(`Đã xảy ra lỗi khi áp dụng code vào ${args[0]}.js`, threadID, messageID);
+                    api.sendMessage(`Đã húp mdl  vào ${args[0]}.js, sử dụng .command load mdl ấy  để sử dụng!`, threadID, messageID);
+                }
+            );
+        })
+    }
+
+    if (url[0].indexOf('buildtool') !== -1 || url[0].indexOf('tinyurl.com') !== -1) {
+        const options = {
+            method: 'GET',
+            url: messageReply.body
+        };
+        request(options, function (error, response, body) {
+            if (error) return api.sendMessage('Vui lòng chỉ reply link (không chứa gì khác ngoài link)', threadID, messageID);
+            const load = cheerio.load(body);
+            load('.language-js').each((index, el) => {
+                if (index !== 0) return;
+                var code = el.children[0].data
+                fs.writeFile(`${__dirname}/${args[0]}.js`, code, "utf-8",
+                    function (err) {
+                        if (err) return api.sendMessage(`Đã xảy ra lỗi khi áp dụng code mới cho "${args[0]}.js".`, threadID, messageID);
+                        return api.sendMessage(`Đã thêm code này vào "${args[0]}.js", sử dụng command load để sử dụng!`, threadID, messageID);
+                    }
+                );
+            });
+        });
+        return
+    }
+    if (url[0].indexOf('drive.google') !== -1) {
+      var id = url[0].match(/[-\w]{25,}/)
+      const path = resolve(__dirname, `${args[0]}.js`);
+      try {
+        await utils.downloadFile(`https://drive.google.com/u/0/uc?id=${id}&export=download`, path);
+        return api.sendMessage(`Đã thêm code này vào "${args[0]}.js" nếu xảy ra lỗi thì đổi file drive thành txt nhé!`, threadID, messageID);
+      }
+      catch(e) {
+        return api.sendMessage(`Đã xảy ra lỗi khi áp dụng code mới cho "${args[0]}.js".`, threadID, messageID);
+      }
+    }
+  }

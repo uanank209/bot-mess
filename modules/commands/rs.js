@@ -1,21 +1,29 @@
 module.exports.config = {
-  name: "rs",
-  version: "2.0.2",
-  hasPermssion: 3,
-  credits: "Jukie",
-  description: "Khởi động lại bot",
-  commandCategory: "Admin",
-  usages: "rs",
-  cooldowns: 5,
-  dependencies: {}
+    name: "rs",
+    version: "2.0.2",
+    hasPermssion: 3,
+    credits: "Mirai Team mod by Jukie",
+    description: "Khởi động lai bot",
+    commandCategory: "Hệ thống admin-bot",
+    usages: "restart",
+    cooldowns: 5,
+    dependencies: { }
 }
-
-module.exports.run = async function({ api, args, Users, event }) {
-  const { threadID, messageID } = event;
-  const moment = require("moment-timezone");
-  var gio = moment.tz("Asia/Ho_Chi_Minh").format("HH");
-  var phut = moment.tz("Asia/Ho_Chi_Minh").format("mm");
-  var giay = moment.tz("Asia/Ho_Chi_Minh").format("ss");
-  let name = await Users.getNameUser(event.senderID);
-  if (args.length == 0) api.sendMessage(`Bot đang khởi động lại, sẽ hoạt động sau 5 giây nữa nhoaaa !!`, threadID, () => process.exit(1));
+ 
+module.exports.run = async function({ api, args, Users, event}) {
+const { threadID, messageID } = event;
+  let name = await Users.getNameUser(event.senderID)
+const permission = ["100089318180507", "", ""];
+	if (!permission.includes(event.senderID)) return api.sendMessage("Reset bot cc, để lập kỉ lục uptime 999 giờ", event.threadID, event.messageID);
+if(args.length == 0) api.sendMessage(`💟Chào cậu chủ: ${name}\n🔰Cậu chủ vui lòng chờ trong giây lát, hệ thông bot sẽ khởi động lại sau 10s`,event.threadID, () =>process.exit(1))
+}  
+  /*
+else{    
+let time = args.join(" ");
+setTimeout(() =>
+api.sendMessage(`🔮Bot sẽ khỏi động lại sau: ${gio}s\n⏰Bây giờ là: ${gio}:${phut}:${giay} `, threadID), 0)
+setTimeout(() =>
+api.sendMessage("⌛Đang bắt đầu quá trình khỏi động lại",event.threadID, () =>process.exit(1)), 1000*`${time}`);
 }
+}
+*/
