@@ -1,168 +1,114 @@
-// danh sách công việc
-let works = {
-    '😠': {
-        name: 'câu cá',
-        img: 'https://i.imgur.com/DoB5Cw8.gif',
-        done: [
-            ['{name} bạn vừa bắt được con cá đèn lồng và bán được {money}$', 'https://i.imgur.com/BXng765.jpeg'],
-            ['{name} bạn vừa bắt được cá mập và bán được {money}$', 'https://i.imgur.com/dyLyvOA.jpeg'],
-           ['{name} bạn vừa bắt được tôm tít và bán được {money}$', 'https://i.imgur.com/YJiCTWH.jpeg'],
-           ['{name} bạn vừa bắt được cá ngừ và bán được {money}$', 'https://i.imgur.com/eshOIiJ.jpeg'],
-           ['{name} bạn vừa bắt được cá mập và bán được  {money}$', 'https://i.imgur.com/dyLyvOA.jpeg'],
-          ['{name} bạn vừa bắt được cá thu và bán được {money}$', 'https://i.imgur.com/YAS5iGM.jpeg'],
-          ['{name} bạn vừa bắt được cá koi và bán được {money}$', 'https://i.imgur.com/BXwB4xZ.png'],
-          ['{name} bạn vừa bắt được cá trê và bán được {money}$', 'https://i.imgur.com/IE6LQU3.png'],
-          ['{name} bạn vừa bắt được tôm hùm đất và bán được {money}$', 'https://i.imgur.com/XbSWNha.png'],
-          ['{name} bạn vừa bắt được cá kiếm và bán được {money}$', 'https://i.imgur.com/nLndbMc.png'],
-          ['{name} bạn vừa bắt được cá vẹt và bán được {money}$', 'https://i.imgur.com/7H5XwLb.png'],
-          ['{name} bạn vừa bắt được cá hề và bán được {money}$', 'https://i.imgur.com/cLvJZlM.png'],
-           ['{name} bạn vừa bắt được cá vây tay và bán được {money}$', 'https://i.imgur.com/jw5bqu7.png'],
-            ['{name} bạn vừa bắt được cá chép và bán được {money}$', 'https://i.imgur.com/7hVzeDJ.png'],
-          ['{name} bạn vừa bắt được cá mập trắng lớn và bán được {money}$', 'https://i.imgur.com/TuMhGBS.png'],
-            ['{name} bạn vừa bắt được cá mập nhám búa và bán được {money}$', 'https://i.imgur.com/JDVZ3J7.jpeg'],
-          ['{name} bạn vừa bắt được cá hồi và bán được {money}$', 'https://i.imgur.com/wKijFF0.png'],
-          ['{name} bạn vừa bắt được cá khủng long hoàng đế và bán được {money}$', 'https://i.imgur.com/w42NHef.png'],
-          ['{name} bạn vừa bắt được cá hồng vịnh và bán được {money}$', 'https://i.imgur.com/UjdnHhE.png'],
-          ['bạn vừa bắt được cá vượng miệng rộng và bán được {money}$', 'https://i.imgur.com/Cw0qh57.png'],
-          ['{name} bạn vừa bắt được cá betta và bán được {money}$', 'https://i.imgur.com/d33003f.png'],
-           ['{name} bạn vừa bắt được cá rô phi và bán được {money}$', 'https://i.imgur.com/sqBRoDe.png'],
-           ['{name} bạn vừa bắt được cá ngừ đại dương và bán được {money}$', 'https://i.imgur.com/A1qXwXV.png'],
-           ['{name} bạn vừa bắt được cá nhám voi và bán được {money}$', 'https://i.imgur.com/K7Qy4mI.png'],
-           ['{name} bạn vừa bắt được cá pecca vàng và bán được {money}$', 'https://i.imgur.com/S9Qqr3D.png'], 
-          ['{name} bạn vừa bắt được cá mù lán chấm hoa và bán được {money}$', 'https://i.imgur.com/A5XeYbS.png'],
-        ]
-    },
-    '❤': {
-        name: 'săn thú hoang',
-        img: 'https://i.imgur.com/jc2j4ps.gif',
-        done: [
-            ['{name} bắn được con rắn và bán được {money}$', 'https://i.imgur.com/Q7vv6mG.jpg'],
-           ['{name} bắn được con rồng komodo và bán được {money}$', 'https://i.imgur.com/Y8mfwPN.jpeg'],
-           ['{name} bắn được con bói cá và bán được {money}$', 'https://i.imgur.com/XAM9Ne6.jpeg'],
-           ['{name} bắn được con gấu nâu và bán được {money}$', 'https://i.imgur.com/A3OxqoB.jpeg'],
-           ['{name} bắn được con rắn Anaconda và bán được {money}$', 'https://i.imgur.com/4z6kr8V.jpeg'],
-           ['{name} bắn được con huơu và bán được {money}$', 'https://i.imgur.com/lHQKacE.jpg'],
-           ['{name} bắn được con heo rừng và bán được {money}$', 'https://i.imgur.com/eQQUR3s.jpg'],
-           ['{name} bắn được con sư tử và bán được {money}$', 'https://i.imgur.com/ThGSaPn.jpg'],
-    
-          
-        ]
-    },
-  '😢': { 
-    name: 'Đào đá', 
-    img: 'https://i.imgur.com/zBWwXzN.gif', 
-    done: [ 
-      ['{name} đã đào được viên kim cương và bán được {money}$', 'https://i.imgur.com/9cHq8nN.png'],
-       ['{name} đã đào được vàng và bán được {money}$', 'https://i.imgur.com/HB0Bmqo.jpg'],
-       ['{name} đã đào được quặng sắt và bán được {money}$', 'https://i.imgur.com/wD0VEZ8.png'],
-      ['{name} đã đào được ngọc lục bảo và bán được {money}$', 'https://i.imgur.com/NyYurEd.jpg'],
-       ['{name} đã đào được ngọc anh tím và bán được {money}$', 'https://i.imgur.com/8kc5m2L.jpg'],
-       ['{name} đã đào được than đá và bán được {money}$', 'https://i.imgur.com/CY3lCqx.jpg'],
-       ['{name} đã đào được ruby cực hiếm và bán được {money}$', 'https://i.imgur.com/OoP1Smk.jpg'],
-
-      ]
-  },
-  '👍': {
-        name: 'bắn chim',
-        img: 'https://i.imgur.com/4DctekU.gif',
-        done: [
-            ['{name} bắn được con chim đen và bán được {money}$', 'https://i.imgur.com/IPeNm8n.jpeg'],
-           ['{name} bắn được con đại bàng và bán được {money}$', 'https://i.imgur.com/EklUNah.jpeg'],
-           ['{name} bắn được con chim én và bán được {money}$', 'https://i.imgur.com/kUhS155.jpeg'],
-           ['{name} bắn được con chim vành khuyên và bán được {money}$', 'https://i.imgur.com/DErkrnd.jpeg'],
-           ['{name} bắn được con chim đuôi dài và bán được {money}$', 'https://i.imgur.com/PMaurmG.jpeg'],
-           ['{name} bắn được con chim chích chòe và bán được {money}$', 'https://i.imgur.com/muJCa5P.jpeg'],
-           ['{name} bắn được con vẹt và bán được {money}$', 'https://i.imgur.com/2nN01CY.jpeg'],
-           ['{name} bắn được con chim họa mi và bán được {money}$', 'https://i.imgur.com/88Cq2Hf.jpeg'],
-           ['{name} bắn được con chim chào mào và bán được {money}$', 'https://i.imgur.com/9R8BrMF.jpeg'],
-          ['{name} bắn được con chim sẻ và bán được {money}$', 'https://i.imgur.com/yZcWTT6.jpeg'],
-           ['{name} bắn được con chim vàng anh và bán được {money}$', 'https://i.imgur.com/bk9a6e4.jpeg'],
-           ['{name} bắn được con chim chìa vôi và bán được {money}$', 'https://i.imgur.com/SxhsgX2.jpeg'],
-           ['{name} bắn được con chim cu gáy và bán được {money}$', 'https://i.imgur.com/ZdFZQ1N.jpeg'],
-           ['{name} bắn được con chim yến phụng và bán được {money}$', 'https://i.imgur.com/FG61Y7R.jpeg'],
-          ['{name} bắn được con chim sơn ca và bán được {money}$', 'https://i.imgur.com/XZSGXkL.jpeg'],
-
-          ],
-  },
-    // thêm tiếp công việc...
-};
-
-
-exports.config = {
-    name: 'work',
-    version: '0.0.1',
+const fs = require("fs-extra");
+module.exports.config = {
+    name: "work",
+    version: "1.0.2",
     hasPermssion: 0,
-    credits: 'DC-Nam',
-    description: 'work',
-    commandCategory: 'Kiếm Tiền',
-    usages: '[]',
-    cooldowns: 3
+    credits: "⚡D-Jukie", 
+    description: "Làm việc để có tiền, có làm thì mới có ăn",
+    commandCategory: "Economy",
+    cooldowns: 5,
+    envConfig: {
+        cooldownTime: 1200000
+    }
 };
-let stream_url = url=>require('axios').get(url, {
-    responseType: 'stream',
-}).then(res=>res.data);
-let _0 = x=>x < 10?'0'+x: x;
-let random = (min, max)=>Math.random()*(max-min+1)+min<<0;
-exports.run = o=>o.api.sendMessage({
-        body: `[ Công việc - Work ]\n${Object.entries(works).map(($, i)=>`[${i+1} / ${$[0]}] ${$[1].name}`).join('\n')}\n\n-> Thả icon để làm việc tương ứng hoặc Reply STT.\n\n👉 Lệnh đang trong giai đoạn thử nghiệm`,
-    }, o.event.threadID, (err, res)=>(res.name = exports.config.name, res.event = o.event, global.client.handleReaction.push(res), global.client.handleReply.push(res)), o.event.messageID); 
-exports.handleReaction = async o=>{
-    let _ = o.handleReaction;
-    let uid = o.event.userID;
-    let user = await o.Users.getData(uid);if (!user)return send(`Error`);
-    let data = user.data;
-    let send = (msg, callback) => o.api.sendMessage(msg, o.event.threadID, callback, o.event.messageID);
-    
-    if  (!data)user.data = {};
-    if (uid != _.event.senderID)return;
-    if (typeof data.work != undefined && data.work>= Date.now())return (x=>send(`Hãy làm việc sau: ${_0(x/1000/60<<0)} phút ${_0(x/1000%60<<0)} giây.`))(data.work-Date.now());
+module.exports.onLoad = () => {
+    const fs = require("fs-extra");
+    const request = require("request");
+    const dirMaterial = __dirname + `/cache/`;
+    if (!fs.existsSync(dirMaterial + "cache")) fs.mkdirSync(dirMaterial, { recursive: true });
+    if (!fs.existsSync(dirMaterial + "work.jpeg")) request("https://i.imgur.com/pPw9hY9.jpeg").pipe(fs.createWriteStream(dirMaterial + "work.jpeg"));
+}
+module.exports.languages = {
+    "vi": {
+        "cooldown": "⚡️Bạn đã làm việc rồi, quay lại sau: %1 phút %2 giây."      
+    },
+    "en": {
+        "cooldown": "⚡️You're done, come back later: %1 minute(s) %2 second(s)."
+    }
+}
+module.exports.handleReply = async ({ event, api, handleReply, Currencies, getText }) => {
+    const { threadID, messageID, senderID } = event;
+    let cc = (await Currencies.getData(senderID)).cc || {};
+//random coins nhận được khi làm việc ít nhất 200
+var coinscn = Math.floor(Math.random() * 401) + 1000; //random coins khi làm ở khu công nghiệp
+var coinsdv = Math.floor(Math.random() * 801) + 1000; //random coins khi làm ở khu dịch vụ
+var coinsmd = Math.floor(Math.random() * 401) + 5000; //random coins khi làm ở mỏ dầu
+var coinsq = Math.floor(Math.random() * 601) + 5000; //random coins khi khai thác quặng
+var coinsdd = Math.floor(Math.random() * 201) + 5000; //random coins khi đào đá
+var coinsdd1 = Math.floor(Math.random() * 801) + 5000; //random coins khi đào đá
 
-    let work = works[o.event.reaction];
-    let msg = {};
+//random công việc cần làm
+var rdcn = ['tuyển dụng nhân viên', 'quản trị khách sạn', 'tại nhà máy điện', 'đầu bếp trong nhà hàng', 'công nhân']; //random công việc khi làm ở khu công nghiệp
+var work1 = rdcn[Math.floor(Math.random() * rdcn.length)];   
 
-    if (!work)return send(`Công việc không có trong danh sách`);
+var rddv = ['sửa ống nước', 'sửa điều hòa cho hàng xóm', 'bán hàng đa cấp', 'phát tờ rơi', 'shipper', 'sửa máy vi tính', 'hướng dẫn viên du lịch', 'cho con bú']; //random công việc khi làm ở khu dịch vụ
+var work2 = rddv[Math.floor(Math.random() * rddv.length)]; 
 
-    data.work = Date.now()+(1000*60*60*24);
-    o.Users.setData(uid, user);
-    let wgm = await new Promise(async resolve=>send({
-        body: `Đang ${work.name}...`,
-    //    attachment: work.img?await stream_url(work.img):[],
-    }, (err, res)=>resolve(res || {})));
-    await new Promise(out=>setTimeout(out, 1000*3.5));
-    let done = work.done[Math.random()*work.done.length<<0];
-    let $ = random(200000, 1000000);
-    msg.body = done[0].replace(/{name}/g, user.name).replace(/{money}/g, $);
-    if (!!done[1])msg;//.attachment = await stream_url(done[1]);
-    send(msg, ()=>o.api.unsendMessage(wgm.messageID));
-    o.Currencies.increaseMoney(uid, $);
-};
-exports.handleReply = async o=>{
-    let _ = o.handleReply;
-    let uid = o.event.senderID;
-    let user = await o.Users.getData(uid);if (!user)return send(`Error`);
-    let data = user.data;
-    let send = (msg, callback) => o.api.sendMessage(msg, o.event.threadID, callback, o.event.messageID);
-    
-    if  (!data)user.data = {};
-    if (uid != _.event.senderID)return;
-    if (typeof data.work != undefined && data.work>= Date.now())return (x=>send(`Hãy làm việc sau: ${_0(x/1000/60<<0)} phút ${_0(x/1000%60<<0)} giây.`))(data.work-Date.now());
+var rdmd = ['kiếm được 13 thùng dầu', 'kiếm được 8 thùng', 'kiếm được 9 thùng dầu', 'kiếm được 8 thùng dầu', 'ăn cướp dầu ', 'lấy nước đổ vô dầu rồi bán']; //random công việc khi làm ở mỏ dầu
+var work3 = rdmd[Math.floor(Math.random() * rdmd.length)]; 
 
-    let work = Object.values(works)[o.event.body-1];
-    let msg = {};
+var rdq = ['quặng sắt', 'quặng vàng', 'quặng than', 'quặng chì', 'quặng đồng ', 'quặng dầu']; //random công việc khi khai thác quặng
+var work4 = rdq[Math.floor(Math.random() * rdq.length)]; 
 
-    if (!work)return send(`Công việc không có trong danh sách`);
+var rddd = ['kim cương', 'vàng', 'than', 'ngọc lục bảo', 'sắt ', 'đá bình thường', 'lưu ly', 'đá xanh']; //random công việc khi đào đá
+var work5 = rddd[Math.floor(Math.random() * rddd.length)]; 
 
-    data.work = Date.now()+(1000*60*60*24);
-    o.Users.setData(uid, user);
-    let wgm = await new Promise(async resolve=>send({
-        body: `Đang ${work.name}...`,
-    //    attachment: work.img?await stream_url(work.img):[],
-    }, (err, res)=>resolve(res || {})));
-    await new Promise(out=>setTimeout(out, 1000*3.5));
-    let done = work.done[Math.random()*work.done.length<<0];
-    let $ = random(200000, 1000000);
-    msg.body = done[0].replace(/{name}/g, user.name).replace(/{money}/g, $);
-    if (!!done[1])msg;//.attachment = await stream_url(done[1]);
-    send(msg, ()=>o.api.unsendMessage(wgm.messageID));
-    o.Currencies.increaseMoney(uid, $);
-};
+var rddd1 = ['khách vip', 'khách quen', 'người lạ', 'thằng ngu tầm 23 tuổi', 'anh lạ mặt', 'khách quen', 'đại gia 92 tuổi', 'thằng nhóc 12 tuổi']; //random công việc khi đào đá
+var work6 = rddd1[Math.floor(Math.random() * rddd1.length)];
+
+
+var msg = "";
+    switch(handleReply.type) {
+        case "choosee": {
+            
+            switch(event.body) {
+                case "1": msg = `⚡️Bạn đang làm việc ${work1} ở khu công nghiệp và kiếm được ${coinscn}$` ; Currencies.increaseMoney(event.senderID, coinscn); break;             
+                case "2": msg = `⚡️Bạn đang làm việc ${work2} ở khu dịch vụ và kiếm được ${coinsdv}$`; Currencies.increaseMoney(event.senderID, coinsdv); break;
+                case "3": msg = `⚡️Bạn ${work3} tại khu mở dầu và bán được ${coinsmd}$`; Currencies.increaseMoney(event.senderID, coinsmd); break;
+                case "4": msg = `⚡️Bạn đang khai thác ${work4} và kiếm được ${coinsq}$`; Currencies.increaseMoney(event.senderID, coinsq); break;
+                case "5": msg = `⚡️Bạn đào được ${work5} và kiếm được ${coinsdd}$` ; Currencies.increaseMoney(event.senderID, coinsdd); break;
+                case "6": msg = `⚡️Bạn được ${work6} cho ${coinsdd1}$ nếu xxx 1 đêm, thế là bạn đồng ý ngay :)))`; Currencies.increaseMoney(event.senderID, coinsdd1); break;
+                case "7": msg = "⚡️Chưa update..."; break; //thêm case nếu muốn 
+                default: break;
+            };
+            const choose = parseInt(event.body);
+            if (isNaN(event.body)) return api.sendMessage("⚡️Vui lòng nhập 1 con số", event.threadID, event.messageID);
+            if (choose > 7 || choose < 1) return api.sendMessage("⚡️Lựa chọn không nằm trong danh sách.", event.threadID, event.messageID); //thay số case vào số 7
+            api.unsendMessage(handleReply.messageID);
+            if (msg == "⚡️Chưa update...") {
+                msg = "⚡️Update soon...";
+            };
+            return api.sendMessage(`${msg}`, threadID, async () => {
+            cc.work2Time = Date.now();
+            await Currencies.setData(senderID, { cc });
+            
+        });
+
+    };
+}
+}
+module.exports.run = async ({  event, api, handleReply, Currencies, getText }) => {
+    const { threadID, messageID, senderID } = event;
+    const cooldown = global.configModule[this.config.name].cooldownTime;
+    let cc = (await Currencies.getData(senderID)).cc || {};
+    //cooldownTime cho mỗi lần nhận 
+    if (typeof cc !== "undefined" && cooldown - (Date.now() - cc.work2Time) > 0) {
+
+        var time = cooldown - (Date.now() - cc.work2Time),
+            minutes = Math.floor(time / 600000),
+            seconds = ((time % 600000) / 10000).toFixed(0); 
+        return api.sendMessage(getText("cooldown", minutes, (seconds < 10 ? "0" + seconds : seconds)), event.threadID, event.messageID);
+    }
+    else {    
+    return api.sendMessage({body: "⚡ KIẾM TIỀN MỖI NGÀY ⚡\n\n1. Khu công nghiệp 🏗️.\n2. Khu dịch vụ 🏘️.\n3. Khu mỏ dầu 🏭.\n4. Khai thác quặng.\n5. Đào đá ⛰️\n6. Đứng đường 🏪 :)))\n7. Update soon...\n\n⚡️Hãy reply tin nhắn và chọn theo số",attachment: fs.createReadStream(__dirname + `/cache/work.jpeg`)}
+            , event.threadID, (error, info) => {
+                cc.work2Time = Date.now();
+        global.client.handleReply.push({
+            type: "choosee",
+            name: this.config.name,
+            author: event.senderID,
+            messageID: info.messageID
+          })  
+        })
+    }
+}

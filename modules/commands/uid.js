@@ -1,18 +1,22 @@
 module.exports.config = {
-    name: "uid",
-    version: "1.0.0",
-    hasPermssion: 0,
-    Rent: 1,
-    credits: "NLam182",
-    description: "Kiểm tra UID của tài khoản Facebook",
-    commandCategory: "Thành Viên",
-    usages: "uid [reply/mention/link]",
-    cooldowns: 0
-};
+	name: "uid",
+	version: "1.2.0",
+	hasPermssion: 0,
+	credits: "TrúcCute",// chính chủ, xin đừng hiểu nhầm thay credits
+	description: "Lấy ID người dùng.",
+	commandCategory: "Bổ não",
+	cooldowns: 5
+}
 
-module.exports.run = async ({ api, event }) => {
-    const { threadID, messageID, mentions, type, messageReply } = event;
-  const uid = type === "message_reply" && messageReply ? messageReply.senderID : (mentions && Object.keys(mentions).length > 0) ? Object.keys(mentions)[0] : event.senderID;
-  api.sendMessage(`${uid}`, threadID, messageID);
-
-};
+module.exports.run = async function ({ api, event, Users, args }) {
+  const { type, threadID, messageID, mentions, senderID, messageReply } = event;
+  if (type == "message_reply") {
+      uid = messageReply.senderID
+    } else if (args.join().indexOf('@') !== -1) {
+        var uid = Object.keys(mentions)[0]
+    }  else {
+        var uid = senderID
+  } 
+  var name = await Users.getNameUser(uid)
+    return api.sendMessage(uid, threadID, messageID);
+}
