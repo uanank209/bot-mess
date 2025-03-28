@@ -5,7 +5,7 @@ module.exports.config = {
   credits: "Khoa x Nam",
   description: "chuyển văn bản sang mã nhị phân và ngược lại",
   commandCategory: "Tiện ích",
-  usages: "[encode/decode] [text/binary]",
+  usages: "[encode/decode] [text]",
   cooldowns: 0
 };
 
@@ -33,6 +33,6 @@ module.exports.run = async function ({ api, event, args }) {
   const allType = ["encode","en","decode","de"];
   if (!allType.includes(type)) return api.sendMessage("Không đúng cú pháp!", threadID, messageID);
   var input = event.body.slice(event.body.indexOf(args[1]));
-  if (type == "encode" || type == "en") return api.sendMessage(`${encode(input)}`, threadID, messageID);
-  if (type == "decode" || type == "de") return api.sendMessage(`${decode(input)}`, threadID, messageID);
-    }
+  if (type == "encode" || type == "en") return api.sendMessage(` ${encode(input)}`, threadID, messageID);
+  if (type == "decode" || type == "de") return api.sendMessage(` ${decode(input)}`, threadID, messageID);
+}

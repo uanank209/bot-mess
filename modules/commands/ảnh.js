@@ -1,141 +1,183 @@
 module.exports.config = {
-    name: "ảnh",
-    version: "1.0.0",
-    hasPermssion: 0,
-    credits: "Lương Trường Khôi",
-    description: "Gửi ảnh theo keyword",
-    commandCategory: "Media",
-    usages: "[keyword]",
-    prefix: false, // Bot VIP hơn
-    cooldowns: 5
-};
+  name: "ảnh",
+  version: "1.2.0",
+  hasPermssion: 0,
+  credits: "TrúcCute",// chính chủ xin đừng hiểu nhầm thay credits
+  description: "xem ảnh hiện có trên bot",
+  commandCategory: "Dành cho người dùng",
+  usages: "trống",
+  cooldowns: 5,
+  dependencies: {
+    "axios": ""
+  }
+}
 
-module.exports.run = async ({ api, event, args }) => {
-    const axios = require("axios");
-    const fs = require("fs");
-    const path = require("path");
+module.exports.handleReply = async ({ api, event, handleReply }) => {
+  const axios = require("axios");
+const { threadID, messageID, body } = event;
+    switch(handleReply.type) {
+        case "reply": {
+            switch(body) {
 
-    const { threadID, messageID, mentions, type, messageReply } = event;
-    const uid =
-        type === "message_reply" && messageReply
-            ? messageReply.senderID
-            : mentions && Object.keys(mentions).length > 0
-            ? Object.keys(mentions)[0]
-            : event.senderID;
+					case "1": {
+                const res = await axios.get("https://APIURL.miraiofficials123.repl.co");
+//lấy data trên web api
+const data = res.data.url;
+//tải ảnh xuống
+let download = (await axios.get(data, {
+			responseType: "stream"
+		})).data;
+            api.unsendMessage(handleReply.messageID);
+          return api.sendMessage({body: `𝐀̉𝐧𝐡 𝐀𝐧𝐲𝐚 𝐜𝐮̉𝐚 𝐛𝐚̣𝐧 𝐧𝐞̀ <3`, attachment: download}, threadID, messageID);
+          };
+			break;
 
-    // API URLs
-    const API_URL1 = "https://imgs-api.vercel.app/"; // API chính
-    const API_URL2 = "https://api.sumiproject.net/images/"; // API cho anime & 6mui
-    const API_KEY = "mk001"; // API key
+        case "2": {
+                const res = await axios.get("https://apikanna.ngochan6666.repl.co");
+//lấy data trên web api
+const data = res.data.data;
+//tải ảnh xuống
+let download2 = (await axios.get(data, {
+			responseType: "stream"
+		})).data;
+    api.unsendMessage(handleReply.messageID);
+          return api.sendMessage({body: `𝐀̉𝐧𝐡 𝐊𝐚𝐧𝐧𝐚 𝐜𝐮̉𝐚 𝐛𝐚̣𝐧 𝐧𝐞̀ <3`, attachment: download2}, threadID, messageID);
+          };
+			break;
 
-    // Từ khóa chỉ dùng API_URL2
-    const api2Keywords = ["anime", "6mui"];
+        case "3": {
+                const res = await axios.get("https://api.xlshsad.repl.co/images/mirai");
+//lấy data trên web api
+const data = res.data.url;
+//tải ảnh xuống
+let download3 = (await axios.get(data, {
+			responseType: "stream"
+		})).data;
+          api.unsendMessage(handleReply.messageID);
+          return api.sendMessage({body: `𝐀̉𝐧𝐡 𝐌𝐢𝐫𝐚𝐢 𝐜𝐮̉𝐚 𝐛𝐚̣𝐧 𝐧𝐞̀ <3`, attachment: download3}, threadID, messageID);
+          };
+			break; 
 
-    // Danh sách từ khóa hợp lệ
-    const keywords = {
-        "anime": "Ảnh anime",
-        "6mui": "Ảnh 6 múi",
-        "girl": "Ảnh gái xinh",
-        "du": "Ảnh dú",
-        "mong": "Ảnh mông",
-        "capdoi": "Ảnh cặp đôi",
-        "gainhat": "Ảnh gái nhật",
-        "hana": "Ảnh hana",
-        "ausand": "Ảnh ausand",
-        "jimmy": "Ảnh jimmy",
-        "jack": "Ảnh jack",
-        "khanhuyen": "Ảnh khánh huyền",
-        "lebong": "Ảnh lê bống",
-        "linhngocdam": "Ảnh linh ngọc đàm",
-        "ngoctrinh": "Ảnh ngọc trinh",
-        "naughty": "Ảnh naughty",
-        "japcosplay": "Ảnh japan cosplay",
-        "loli": "Ảnh loli",
-        "caidloli": "Ảnh caid loli",
-        "tw": "Ảnh gái trung quốc",
-        "nsfw": "Ảnh NSFW",
-        "aqua": "Ảnh aqua",
-        "chitanda": "Ảnh chitanda",
-        "kana": "Ảnh kana",
-        "kurumi": "Ảnh kurumi",
-        "lucy": "Ảnh lucy",
-        "mirai": "Ảnh mirai",
-        "rem": "Ảnh rem",
-        "sagiri": "Ảnh sagiri",
-        "umaru": "Ảnh umaru",
-        "rushia": "Ảnh rushia"
-    };
+        case "4": {
+                const res = await axios.get("https://APIURLChitanda.miraiofficials123.repl.co");
+//lấy data trên web api
+const data = res.data.url;
+//tải ảnh xuống
+let download4 = (await axios.get(data, {
+			responseType: "stream"
+		})).data;
+          api.unsendMessage(handleReply.messageID);
+          return api.sendMessage({body: `𝐀̉𝐧𝐡 𝐂𝐡𝐢𝐭𝐚𝐧𝐝𝐚 𝐜𝐮̉𝐚 𝐛𝐚̣𝐧 𝐧𝐞̀ <3`, attachment: download4}, threadID, messageID);
+          };
+			break;
+                
+        case "5": {
+                const res = await axios.get("https://APIURLLoLi.miraiofficials123.repl.co");
+//lấy data trên web api
+const data = res.data.url;
+//tải ảnh xuống
+let download5 = (await axios.get(data, {
+			responseType: "stream"
+		})).data;
+          api.unsendMessage(handleReply.messageID);
+          return api.sendMessage({body: `𝐀̉𝐧𝐡 𝐥𝐨𝐥𝐢 𝐜𝐮̉𝐚 𝐛𝐚̣𝐧 𝐧𝐞̀ <3`, attachment: download5}, threadID, messageID);
+          };
+			break;
 
-    // Nếu không có keyword, hiển thị menu
-    if (!args[0]) {
-        let menu = "✨===== 『 𝗠𝗘𝗡𝗨 𝗔̉𝗡𝗛 』 =====✨\n";
-        menu += "🎭 𝗗𝗔𝗡𝗛 𝗦Á𝗖𝗛 𝗧𝗨̛̀ 𝗞𝗛Ó𝗔 🎭\n";
-        menu += "━━━━━━━━━━━━━━━━━\n";
-        for (const [key, description] of Object.entries(keywords)) {
-            menu += `➢ ${key.toUpperCase()}: ${description}\n`;
-        }
-        menu += "━━━━━━━━━━━━━━━━━\n";
-        menu += "📌 𝗦𝗨̛̉ 𝗗𝗨̣𝗡𝗚: /ảnh [𝘁𝘂̛̀ 𝗸𝗵𝗼́𝗮] 📌";
+        case "6": {
+                const res = await axios.get("https://APIdoraemon.miraiofficials123.repl.co");
+//lấy data trên web api
+const data = res.data.data;
+//tải ảnh xuống
+let download6 = (await axios.get(data, {
+			responseType: "stream"
+		})).data;
+          api.unsendMessage(handleReply.messageID);
+          return api.sendMessage({body: `𝐀̉𝐧𝐡 𝐃𝐨𝐫𝐚𝐞𝐦𝐨𝐧 𝐜𝐮̉𝐚 𝐛𝐚̣𝐧 𝐧𝐞̀ <3`, attachment: download6}, threadID, messageID);
+          };
+			break;
 
-        return api.sendMessage(menu, threadID, messageID);
-    }
+        case "7": {
+                const res = await axios.get("https://APIURLViolet.miraiofficials123.repl.co");
+//lấy data trên web api
+const data = res.data.url;
+//tải ảnh xuống
+let download7 = (await axios.get(data, {
+			responseType: "stream"
+		})).data;
+          api.unsendMessage(handleReply.messageID);
+          return api.sendMessage({body: `𝐀̉𝐧𝐡 𝐕𝐢𝐨𝐥𝐞𝐭 𝐜𝐮̉𝐚 𝐛𝐚̣𝐧 𝐧𝐞̀ <3`, attachment: download7}, threadID, messageID);
+          };
+			break;
 
-    // Lấy từ khóa nhập vào
-    const keyword = args[0];
+        case "8": {
+                const res = await axios.get("https://api.apidata.repl.co/gentle");
+//lấy data trên web api
+const data = res.data.data;
+//tải ảnh xuống
+let download8 = (await axios.get(data, {
+			responseType: "stream"
+		})).data;
+          api.unsendMessage(handleReply.messageID);
+          return api.sendMessage({body: `𝐀̉𝐧𝐡 𝐠𝐚́𝐢 𝐜𝐮̉𝐚 𝐛𝐚̣𝐧 𝐧𝐞̀ <3`, attachment: download8}, threadID, messageID);
+          };
+			break;     
 
-    // Kiểm tra từ khóa hợp lệ
-    if (!keywords[keyword]) {
-        return api.sendMessage("❌ 𝗧𝘂̛̀ 𝗸𝗵𝗼́𝗮 𝗸𝗵𝗼̂𝗻𝗴 𝗵𝗼̛̣𝗽 𝗹𝗲̣̂. 𝗡𝗵𝗮̣̂𝗽 `/ảnh` đ𝗲̂̉ 𝘅𝗲𝗺 𝗱𝗮𝗻𝗵 𝘀𝗮́𝗰𝗵!", threadID, messageID);
-    }
+        case "9": {
+                const res = await axios.get("https://apiboy.thanhduongtran465.repl.co/");
+//lấy data trên web api
+const data = res.data.data;
+//tải ảnh xuống
+let download9 = (await axios.get(data, {
+			responseType: "stream"
+		})).data;
+          api.unsendMessage(handleReply.messageID);
+          return api.sendMessage({body: `𝐀̉𝐧𝐡 𝐭𝐫𝐚𝐢 𝐜𝐮̉𝐚 𝐛𝐚̣𝐧 𝐧𝐞̀ <3`, attachment: download9}, threadID, messageID);
+          };
+			break;         
 
-    try {
-        // Kiểm tra và tạo thư mục cache nếu chưa có
-        const cacheDir = path.resolve(__dirname, "cache");
-        if (!fs.existsSync(cacheDir)) {
-            fs.mkdirSync(cacheDir);
-        }
+        case "10": {
+              const res = await axios.get("https://APIURLHG.miraiofficials123.repl.co");
+//lấy data trên web api
+const data = res.data.url;
+//tải ảnh xuống
+let download10 = (await axios.get(data, {
+			responseType: "stream"
+		})).data;
+          api.unsendMessage(handleReply.messageID);
+          return api.sendMessage({body: `𝐀̉𝐧𝐡 𝐇𝐆 𝐜𝐮̉𝐚 𝐛𝐚̣𝐧 𝐧𝐞̀ <3`, attachment: download10}, threadID, messageID);
+          };
+			break;       
+                
+					default:
+				const choose = parseInt(body);
+            	if (isNaN(body)) return api.sendMessage("💟 𝐕𝐮𝐢 𝐥𝐨̀𝐧𝐠 𝐧𝐡𝐚̣̂𝐩 𝟏 𝐜𝐨𝐧 𝐬𝐨̂́", threadID, messageID);
+            	if (choose > 10 || choose < 1) return api.sendMessage("🔰 𝐋𝐮̛̣𝐚 𝐜𝐡𝐨̣𝐧 𝐤𝐡𝐨̂𝐧𝐠 𝐧𝐚̆̀𝐦 𝐭𝐫𝐨𝐧𝐠 𝐝𝐚𝐧𝐡 𝐬𝐚́𝐜𝐡.", threadID, messageID); 
+			}
+		}
+	}
+}
 
-        // Xác định API sử dụng
-        const isAPI2 = api2Keywords.includes(keyword);
-        const imageURL = isAPI2 ? `${API_URL2}${keyword}` : `${API_URL1}${keyword}?apikey=${API_KEY}`;
-
-        // Gọi API lấy ảnh
-        const response = await axios.get(imageURL);
-        if (!response.data || !response.data.url) {
-            return api.sendMessage("❌ 𝗞𝗵𝗼̂𝗻𝗴 𝘁𝗶̀𝗺 𝘁𝗵𝗮̂́𝘆 𝗮̉𝗻𝗵. 𝗩𝘂𝗶 𝗹𝗼̀𝗻𝗴 𝘁𝗵𝘂̛̉ 𝗹𝗮̣𝗶!", threadID, messageID);
-        }
-
-        const { url, author } = response.data;
-        const ext = path.extname(url);
-        const filePath = path.resolve(cacheDir, `${keyword}${ext}`);
-
-        // Tải ảnh về
-        const writer = fs.createWriteStream(filePath);
-        const imageStream = await axios({
-            url: url,
-            method: "GET",
-            responseType: "stream"
-        });
-        imageStream.data.pipe(writer);
-
-        writer.on("finish", () => {
-            let messageBody = `🖼️ 𝗛Ì𝗡𝗛 Ả𝗡𝗛 𝗖𝗛𝗢 𝗧Ừ 𝗞𝗛Ó𝗔: ${keyword.toUpperCase()}\n━━━━━━━━━━━━━━━━━`;
-            if (!isAPI2 && author) messageBody += `\n📌 𝗧𝗮́𝗰 𝗴𝗶𝗮̉: ${author}`;
-
-            api.sendMessage({
-                body: messageBody,
-                attachment: fs.createReadStream(filePath)
-            }, threadID, () => {
-                fs.unlinkSync(filePath); // Xóa file sau khi gửi
-            }, messageID);
-        });
-
-        writer.on("error", (err) => {
-            console.error("Lỗi khi tải ảnh:", err);
-        });
-
-    } catch (error) {
-        console.error("Lỗi xảy ra:", error);
-        api.shareContact("❌ 𝗖𝗼́ 𝗹𝗼̂̃𝗶 𝘅𝗮̉𝘆 𝗿𝗮. 𝗧𝗵𝘂̛̉ 𝗹𝗮̣𝗶 𝗵𝗼𝗮̣̆𝗰 𝗹𝗶𝗲̂𝗻 𝗵𝗲̣̂ 𝗮𝗱𝗺𝗶𝗻!", `100018277053087`, threadID, messageID);
-    }
-};
+module.exports.run = async ({ api, event, handleReply }) => {
+	return api.sendMessage({ body: 
+    "⠀ ⠀ = 𝐍𝐡𝐮̛̃𝐧𝐠 𝐚̉𝐧𝐡 𝐡𝐢𝐞̣̂𝐧 𝐜𝐨́ =" +
+    "\n\n𝟏. 𝐀𝐧𝐲𝐚" +
+    "\n𝟐. 𝐊𝐚𝐧𝐧𝐚" +
+    "\n𝟑. 𝐌𝐢𝐫𝐚𝐢" +
+    "\n𝟒. 𝐂𝐡𝐢𝐭𝐚𝐧𝐝𝐚" +
+    "\n𝟓. 𝐥𝐨𝐥𝐢" +
+    "\n𝟔. 𝐃𝐨𝐫𝐚𝐞𝐦𝐨𝐧" +
+    "\n𝟕. 𝐕𝐢𝐨𝐥𝐞𝐭" +
+    "\n𝟖. 𝐆𝐚́𝐢" +
+    "\n𝟗. 𝐓𝐫𝐚𝐢" +
+    "\n𝟏𝟎. 𝐇𝐆" +
+    "\n\n𝐑𝐞𝐩𝐥𝐲 𝐒𝐓𝐓 𝐚̉𝐧𝐡 𝐛𝐚̣𝐧 𝐦𝐮𝐨̂́𝐧 𝐱𝐞𝐦\n=> 𝐂𝐨́ 𝐭𝐡𝐞̂̉ 𝐠𝐨́𝐩 𝐭𝐡𝐞̂𝐦 𝐚̉𝐧𝐡 𝐜𝐡𝐨 𝐚𝐝𝐦𝐢𝐧 𝐛𝐚̆̀𝐧𝐠 𝐜𝐚𝐥𝐥𝐚𝐝, 𝐠𝐢𝐮́𝐩 𝐚̉𝐧𝐡 𝐭𝐡𝐞̂𝐦 𝐩𝐡𝐨𝐧𝐠 𝐩𝐡𝐮́"
+            }, event.threadID, (error, info) => {
+        global.client.handleReply.push({
+            type: "reply",
+            name: this.config.name,
+            author: event.senderID,
+            messageID: info.messageID
+        })  
+    })
+}

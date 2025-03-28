@@ -2,9 +2,9 @@ module.exports.config = {
     name: "bigtext",
     version: "1.0.0",
     hasPermssion: 0,
-    credits: "Vdangig = {",
+    credits: "NTKhang",
     description: "ghép ký tự thành chữ siêu to khổng lồ",
-    commandCategory: "Tiện ích",
+    commandCategory: "font chữ",
     usages: "bigtext <nội dung>",
     cooldowns: 5
 };
